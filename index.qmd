@@ -1,15 +1,39 @@
 ---
-title: "Recent posts"
-listing:
-  contents: posts
-  feed: true
-  sort: "date desc"
-  type: default
-  categories: cloud
-  sort-ui: false
-  filter-ui: false
-page-layout: full
-title-block-banner: true
+title: "Piet Stam"
+subtitle: "entrepreneur & consultant"
+about:
+  template: trestles
+  image: profile.jpg
+  image-shape: round
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/pjastam
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/pjastam
+    - icon: github
+      text: GitHub
+      href: https://github.com/pjastam
+    - icon: zotero
+      text: Zotero
+      href: https://www.zotero.org/pjastam/
+    - icon: google-scholar
+      text: Google Scholar
+      href: https://scholar.google.com/citations?user=4vKHtb4AAAAJ&hl=nl
+    - icon: orcid
+      text: ORCID
+      href: https://orcid.org/0000-0003-3680-6391
 ---
 
+I founded the boutique consulting firms Equalis Strategy & Modeling and SiRM - Strategies in Regulated Markets. My area of expertise is building bridges between economic science and daily practice in health care & insurance. I am straightforward and connect stakeholders based on content and shared interests. My passion is solving problems using data, analytics and human interaction.
 
+## Education
+
+{{< fa graduation-cap >}} PhD in Health Economics | 2007 | Erasmus University Rotterdam
+
+{{< fa graduation-cap >}} MSc in Econometrics | 1993 | Erasmus University Rotterdam
+
+## Interests
+
+Digital strategy \| Risk equalization \| Sports analytics
