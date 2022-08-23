@@ -26,5 +26,33 @@
     "title": "Posts",
     "section": "",
     "text": "news\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 12, 2022\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nTristan O’Malley\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nsports\n\n\nanalytics\n\n\n\n\nA Shiny app for talent scouting & development of junior speed skaters\n\n\n\n\n\n\nFeb 13, 2018\n\n\nPiet Stam\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2018-02-13-speed-skating-app-for-talent-scouting-and-development/index.html",
+    "href": "posts/2018-02-13-speed-skating-app-for-talent-scouting-and-development/index.html",
+    "title": "Speed skating app for talent scouting and development",
+    "section": "",
+    "text": "I published the code of the Shiny front-end to my speed skating app at GitHub here. This app is useful for talent scouting & development of junior speed skaters. Speed skating is a popular winter sport in the Netherlands. You can find more about the why and how of this app in the README markdown at my GitHub site. You can find an interactive demo of the app here."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "Since this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Here are my most recent academic papers and client project reports. If you are looking for a complete list of my publications go to my Zotero page."
   }
 ]

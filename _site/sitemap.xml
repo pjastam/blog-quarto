@@ -2,10 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.pietstam.nl/index.html</loc>
-    <lastmod>2022-08-23T07:08:10.975Z</lastmod>
+    <lastmod>2022-08-23T07:25:53.668Z</lastmod>
   </url>
   <url>
     <loc>https://www.pietstam.nl/posts.html</loc>
-    <lastmod>2022-08-23T07:09:21.773Z</lastmod>
+    <lastmod>2022-08-23T07:11:01.157Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.pietstam.nl/posts/2018-02-13-speed-skating-app-for-talent-scouting-and-development/index.html</loc>
+    <lastmod>2022-08-23T07:10:40.351Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.pietstam.nl/posts/post-with-code/index.html</loc>
+    <lastmod>2022-08-23T07:10:41.104Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.pietstam.nl/posts/welcome/index.html</loc>
+    <lastmod>2022-08-23T07:10:41.607Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.pietstam.nl/publications.html</loc>
+    <lastmod>2022-08-23T07:26:00.797Z</lastmod>
   </url>
 </urlset>

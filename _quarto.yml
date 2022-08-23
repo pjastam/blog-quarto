@@ -7,6 +7,7 @@ website:
   navbar:
     right:
       - posts.qmd
+      - publications.qmd
       - icon: github
         href: https://github.com/pjastam
       - icon: twitter
