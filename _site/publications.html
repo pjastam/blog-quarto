@@ -34,6 +34,7 @@ ul.task-list{list-style: none;}
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/iconify-1.0.0-beta.2/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -118,8 +119,10 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<p>Here are my most recent academic papers and client project reports. If you are looking for a complete list of my publications go to <a href="ttps://www.zotero.org/pjastam/">my Zotero page</a>.</p>
+<p>Here are my most recent academic papers and client project reports. If you are looking for a complete list of my publications go to <a href="https://www.zotero.org/pjastam/">my <iconify-icon inline="" icon="academicons:zotero"></iconify-icon> page</a>.</p>
 <script>
+'use strict';
+
 for (let i = 2022; i >= 2021; i--) {
     document.write(`<h2 > ${i} </h2>`);
     document.write(`<div id=year${i}>` + `Loading ${i} publications </div>`);
@@ -133,6 +136,8 @@ for (let i = 2022; i >= 2021; i--) {
         });
     document.write("<br/>")
 }
+
+
 </script>
 
 
