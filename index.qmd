@@ -26,6 +26,8 @@ about:
       href: https://orcid.org/0000-0003-3680-6391
 ---
 
+{{< iconify academicons zotero >}}
+
 I founded the boutique consulting firms Equalis Strategy & Modeling and SiRM - Strategies in Regulated Markets. My area of expertise is building bridges between economic science and daily practice in health care & insurance. I am straightforward and connect stakeholders based on content and shared interests. My passion is solving problems using data, analytics and human interaction.
 
 ## Education
