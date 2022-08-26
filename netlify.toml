@@ -1,0 +1,121 @@
+# Map URIs to pjastam.github.io repo b/o removal of domain name pietstam.nl from this blog-jekyll repo at GitHub
+
+[[redirects]]
+  from = "/coronavirus_dashboard"
+  to = "https://pjastam.github.io/coronavirus-dashboard"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/coronavirus-dashboard"
+  to = "https://pjastam.github.io/coronavirus-dashboard"
+  status = 301
+  force = true
+  
+[[redirects]]
+  from = "/phdthesis"
+  to = "https://pjastam.github.io/phdthesis"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mscthesis"
+  to = "https://pjastam.github.io/mscthesis"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/msc-thesis-arfima"
+  to = "https://pjastam.github.io/msc-thesis-arfima"
+  status = 301
+  force = true
+
+# Migration from blog-jekyll to blog-quarto
+
+[[redirects]]
+  from = "/about"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog"
+  to = "/posts"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/credits"
+  to = "/"
+  status = 301
+  force = true
+
+# Migration from blog-hugo to blog-quarto
+
+[[redirects]]
+  from = "/#about"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/#posts"
+  to = "/posts"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/#publications"
+  to = "/publications"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/#contact"
+  to = "/"
+  status = 301
+  force = true
+
+# Map blog posts URIs from blog-jekyll to blog-quarto
+
+[[redirects]]
+  from = "/blog/2020/04/12/coronavirus-apps-privacy-conditions"
+  to = "/posts/2020-04-12-coronavirus-apps-privacy-conditions"
+  status = 301
+  force = true
+  
+[[redirects]]
+  from = "/blog/2019/05/10/de-bal-is-rond"
+  to = "/posts/2019-05-10-de-bal-is-rond"
+  status = 301
+  force = true
+  
+[[redirects]]
+  from = "/blog/2019/05/10/bayesian-football-odds"
+  to = "/posts/2019-05-10-bayesian-football-odds"
+  status = 301
+  force = true
+  
+[[redirects]]
+  from = "/blog/2019/02/19/personal-health-train-case-risk-equalization"
+  to = "/posts/2019-02-19-personal-health-train-case-risk-equalization"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/2018/06/04/speed-skating-app-dockerized"
+  to = "/posts/2018-06-04-speed-skating-app-dockerized"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/2018/02/13/speed-skating-app-for-talent-scouting-and-development"
+  to = "/posts/2018-02-13-speed-skating-app-for-talent-scouting-and-development"
+  status = 301
+  force = true
+
+# Map blog posts URIs from blog-hugo to blog-quarto
+
+[[redirects]]
+  from = "/post"
+  to = "/posts"
