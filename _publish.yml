@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 899908c7-3e5c-4587-8714-46ecf2dd0d1b
+      url: 'https://peaceful-biscochitos-c9e27c.netlify.app'
