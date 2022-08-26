@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 907d7fbe-1804-488b-988b-1b78ea5e32c0
+      url: 'https://sunny-crostata-0f2fb3.netlify.app'
