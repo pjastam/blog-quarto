@@ -26,7 +26,7 @@ jobs:
           cache-version: 1
       
       - name: Include netlify.toml
-        run: cp netlify.toml _site/
+        run: cp netlify.toml _site/netlify.toml
         shell: bash
         
       - name: Render and Publish
