@@ -5,6 +5,7 @@ project:
 
 website:
   title: "Home"
+  favicon: favicon.png
   site-url: "https://www.pietstam.nl"
   navbar:
     right:
