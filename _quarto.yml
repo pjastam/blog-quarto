@@ -8,8 +8,10 @@ website:
   site-url: "https://www.pietstam.nl"
   navbar:
     right:
-      - posts.qmd
-      - publications.qmd
+      - text: Blog
+        href: posts.qmd
+      - text: Publications
+        href: publications.qmd
       - icon: github
         href: https://github.com/pjastam
       - icon: twitter
