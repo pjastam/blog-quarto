@@ -25,10 +25,6 @@ jobs:
         with:
           cache-version: 1
       
-      - name: Include netlify.toml
-        run: cp netlify.toml _site/netlify.toml
-        shell: bash
-        
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
