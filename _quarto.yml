@@ -1,8 +1,7 @@
 project:
   type: website
-  render:
-    - "*.qmd"
-    - "netlify.toml"
+  resources:
+    - netlify.toml
 
 website:
   title: "Home"
