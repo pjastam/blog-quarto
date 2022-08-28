@@ -117,5 +117,5 @@
 # Map blog posts URIs from blog-hugo to blog-quarto
 
 [[redirects]]
-  from = "/post/"
-  to = "/posts/"
+  from = "/post/*"
+  to = "/posts/:splat"
