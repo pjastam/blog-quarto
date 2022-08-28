@@ -1,4 +1,5 @@
-# Map URIs to pjastam.github.io repo b/o removal of domain name pietstam.nl from this blog-jekyll repo at GitHub
+# Map URIs to pjastam.github.io repo
+# The reason is that the domain name pietstam.nl was removed from this blogdown-jekyll repo at GitHub
 
 [[redirects]]
   from = "/coronavirus_dashboard"
@@ -50,31 +51,8 @@
   status = 301
   force = true
 
-# Migration from blog-hugo to blog-quarto
-
-[[redirects]]
-  from = "/#about"
-  to = "/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/#posts"
-  to = "/posts"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/#publications"
-  to = "/publications"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/#contact"
-  to = "/"
-  status = 301
-  force = true
+# In the redirects below I use splat and wildcard rules to redirect all blog pages in one go
+# Source of this idea: https://cryolayer.com/tutorials/editing-redirect-rules-on-your-webflow-site
 
 # Map blog posts URIs from blog-jekyll to blog-quarto
 
