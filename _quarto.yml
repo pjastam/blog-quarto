@@ -32,7 +32,9 @@ website:
 
 format:
   html:
-    theme: superhero
+    theme: minimal
     css: styles.css
+    font: minimal
+    font_size: L
 
 editor: visual
