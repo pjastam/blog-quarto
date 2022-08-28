@@ -79,38 +79,8 @@
 # Map blog posts URIs from blog-jekyll to blog-quarto
 
 [[redirects]]
-  from = "/blog/2020/04/12/coronavirus-apps-privacy-conditions"
-  to = "/posts/2020-04-12-coronavirus-apps-privacy-conditions"
-  status = 301
-  force = true
-  
-[[redirects]]
-  from = "/blog/2019/05/10/de-bal-is-rond"
-  to = "/posts/2019-05-10-de-bal-is-rond"
-  status = 301
-  force = true
-  
-[[redirects]]
-  from = "/blog/2019/05/10/bayesian-football-odds"
-  to = "/posts/2019-05-10-bayesian-football-odds"
-  status = 301
-  force = true
-  
-[[redirects]]
-  from = "/blog/2019/02/19/personal-health-train-case-risk-equalization"
-  to = "/posts/2019-02-19-personal-health-train-case-risk-equalization"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/2018/06/04/speed-skating-app-dockerized"
-  to = "/posts/2018-06-04-speed-skating-app-dockerized"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/2018/02/13/speed-skating-app-for-talent-scouting-and-development"
-  to = "/posts/2018-02-13-speed-skating-app-for-talent-scouting-and-development"
+  from = "/blog/:year/:month/:day/*"
+  to = "/posts/:year-:month-:day-:splat"
   status = 301
   force = true
 
