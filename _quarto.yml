@@ -22,19 +22,14 @@ website:
 
   page-footer:
     left: |
-      Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl) <br>
-      Except where otherwise noted, content on this site is licensed under a
-      {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} 
-      [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/)
+      Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a <br>
+      {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/)
     right: |
       Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/) <br>
-      [View the source at {{< fa brands github >}} GitHub](https://github.com/pjastam/blog-quarto)
+      View the source at [{{< fa brands github >}} GitHub](https://github.com/pjastam/blog-quarto)
 
 format:
   html:
-    theme: minimal
-    css: styles.css
-    font: minimal
-    font_size: L
-
-editor: visual
+    theme: 
+      light: sketchy
+      dark: slate
