@@ -5,4 +5,4 @@ My blog created with [Quarto](https://quarto.org/), built on [pandoc](https://pa
 
 # Copyright
 
-Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/). The source code in this repository is licensed under the [MIT license](https://github.com/pjastam/blog-quarto/blob/main/LICENSE.md).
+Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). The source code in this repository is licensed under the [MIT license](https://github.com/pjastam/blog-quarto/blob/main/LICENSE.md).
