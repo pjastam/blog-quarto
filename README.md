@@ -5,5 +5,4 @@ My blog created with {{< fa brands r-project >}} and [Quarto](https://quarto.org
 
 # Copyright
 
-Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/). The source code here at [{{< fa brands github >}} GitHub](https://github.com/pjastam/blog-quarto) is licensed under the [MIT license](https://github.com/pjastam/blog-quarto/blob/main/LICENSE).
-
+Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/). The source code in this repository is licensed under the [MIT license](https://github.com/pjastam/blog-quarto/blob/main/LICENSE).
