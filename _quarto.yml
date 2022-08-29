@@ -15,10 +15,13 @@ website:
         href: posts.qmd
       - text: Publications
         href: publications.qmd
-      - icon: github
-        href: https://github.com/pjastam
       - icon: twitter
         href: https://twitter.com/pjastam
+      - icon: linkedin
+        href: https://www.linkedin.com/in/pjastam
+      - icon: github
+        href: https://github.com/pjastam
+
 
   page-footer:
     left: |

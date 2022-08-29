@@ -4,6 +4,10 @@ title: Publications
 
 Here are my most recent academic papers and client project reports. If you are looking for a complete list of my publications go to [my Zotero page](https://www.zotero.org/pjastam/).
 
+[{{< ai orcid >}} ORCID](https://orcid.org/0000-0003-3680-6391) [{{< ai zotero >}} Zotero](https://www.zotero.org/pjastam/) [{{< ai google-scholar >}} Google Scholar](https://scholar.google.com/citations?user=4vKHtb4AAAAJ&hl=nl) 
+
 <script>
 {{< include zotero.js >}}
 </script>
+
+[SEE ALL PUBLICATIONS AT MY ZOTERO PAGE >](https://www.zotero.org/pjastam/)
