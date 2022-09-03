@@ -1,7 +1,6 @@
 project:
   type: website
-  resources:
-    - netlify.toml
+  resources: netlify.toml
 
 website:
   title: "Home"
