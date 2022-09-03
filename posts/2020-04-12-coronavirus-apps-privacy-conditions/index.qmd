@@ -1,6 +1,6 @@
 ---
-title: "Coronavirus-apps: voorkomen is beter dan genezen"
-description: "Een vruchtbare weg om bij de realisatie van corona vind-en-volg apps onze privacy te borgen, is als we komen tot een lijst van voorwaarden c.q. een beschrijving van een situatie waarin het delen van persoonlijke data vanuit Europese normen en waarden aanvaardbaar is. Apps kunnen dan aan de hand van deze lijst volgens het principe ‘privacy by design’ ontworpen en gebouwd worden. Wij, drie bezorgde burgers, doen een aftrap voor zo’n lijst met noodzakelijke voorwaarden."
+title: "Coronavirus apps: better safe than sorry (in Dutch)"
+description: "Piet Stam, Peter Nobels and Marco Woesthuis propose ten privacy conditions that a safe corona app must meet."
 author: "Piet Stam"
 date: "2020-04-12"
 categories: [digital strategy]

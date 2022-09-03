@@ -1,6 +1,6 @@
 ---
 title: "Speed skating app dockerized"
-description: "A Dockerized version of the Shiny app for talent scouting & development of junior speed skaters"
+description: "The first version of the Shiny app had to be installed on a VM with a Shiny server running. Now that I created a Docker version, it is much easier to deploy the app on a VM with Docker pre-installed."
 author: "Piet Stam"
 date: "2018-06-04"
 categories: [sports, analytics]
@@ -8,4 +8,4 @@ image: "featured.jpg"
 image-alt: "Image credit: [**Jesse Stam**](http://jesse-stam.nl/wp-content/gallery/training-thialf-24-okt-2017/DSC_9747.JPG)"
 ---
 
-A Docker image of the [Shiny app](https://pjastam.shinyapps.io/speedskating/) for talent scouting & development of junior speed skaters was created. It is available for download at Docker Hub [here](https://hub.docker.com/r/pjastam/shiny-speedskating/). You can also find more about the how there.
+A Docker image of the [Shiny app](https://pjastam.shinyapps.io/speedskating/) for talent scouting & development of junior speed skaters was created. It is available for download at Docker Hub [here](https://hub.docker.com/r/pjastam/shiny-speedskating/). You can also find more about the how to there. An interactive demo of the (non-Dockerized) Shiny app can be found [here](https://pjastam.shinyapps.io/speedskating/).

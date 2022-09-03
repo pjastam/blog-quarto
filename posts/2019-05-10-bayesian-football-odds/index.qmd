@@ -1,11 +1,13 @@
 ---
 title: "Modeling match results in the Dutch Eredivisie using a hierarchical Bayesian Poisson model"
-description: ""
+description: "This is a rather short blog post, BUT it contains the references to where you can find all the code and estimation results of my first application."
 author: "Piet Stam"
-date: "2019-05-10"
+date: "2019-05-10T18:00:00Z"
 categories: [sports, analytics]
 image: "featured.gif"
 image-alt: "Image credit: [**Wikimedia**](https://nl.wikipedia.org/wiki/Thomas_Bayes#/media/Bestand:Thomas_Bayes.gif)"
 ---
 
-We estimated the odds of football matches in the last two weeks of the 2018/2019 Dutch Eredivisie football competiton. All results and my explanations can be found [here](http://htmlpreview.github.com/?https://github.com/pjastam/r-bayesian-football-odds/blob/master/NL_eredivisie_2014_2019.html). If you are interested in the code, you can find that on [GitHub](https://github.com/pjastam/r-bayesian-football-odds).
+We estimated the odds of football matches in the last two weeks of the 2018/2019 Dutch Eredivisie football competiton. All results and my explanations can be found [here](http://htmlpreview.github.io/?https://github.com/pjastam/r-bayesian-football-odds/blob/1409c9e8bbcfe92d8526e2fc866e0f7a57549d60/NL_eredivisie_2014_2019.nb.html).
+
+If you are interested in the code of the hierarchical Bayesian Poisson model, you can find that on [GitHub](https://github.com/pjastam/r-bayesian-football-odds).

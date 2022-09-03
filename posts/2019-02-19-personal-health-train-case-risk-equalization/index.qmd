@@ -1,6 +1,6 @@
 ---
-title: "Personal Health Train: An application to risk equalization (in Dutch)"
-description: ""
+title: "Personal Health Train: an application to risk equalization (in Dutch)"
+description: "The concept of the Personal Health Train promises a major step forward by facilitating sharing privacy-sensitive data in a decentralized way. In order to actually get this train running, some practical problems need to be solved yet."
 author: "Piet Stam"
 date: "2019-02-19"
 categories: [risk equalization, digital strategy]

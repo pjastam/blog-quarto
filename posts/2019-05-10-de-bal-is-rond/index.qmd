@@ -1,14 +1,14 @@
 ---
 title: "The ball is round (in Dutch)"
-description: ""
+description: "I have predicted the results of the decisive matches in the Eredivisie season 2018/2019 with my hierarchical Bayesian Poisson model. Betting on these results gave me a decent return."
 author: "Piet Stam"
-date: "2019-05-10"
+date: "2019-05-10T21:00:00Z"
 categories: [sports, analytics]
 image: "featured.jpg"
 image-alt: "Image credit: [**René Bouwman/De Telegraaf**](https://www.telegraaf.nl/sport/2205027/van-bommel-ik-heb-de-bagage-die-nodig-is)"
 ---
 
-> Deze blog van mijn hand heb ik op bovenstaande datum op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) gepubliceerd en is hier integraal overgenomen om de openbare beschikbaarheid te garanderen.
+> Deze blog heb ik op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) gepubliceerd en is hier integraal overgenomen om de openbare beschikbaarheid te garanderen.
 
 Ajax en PSV vechten in hun race naar het kampioenschap tot op het laatst voor de punten. Dit weekend speelt Ajax thuis tegen FC Utrecht en PSV uit tegen AZ. Een hiërarchische Bayesiaanse Poisson analyse (ahum) van 5 seizoenen aan wedstrijddata voorspelt winst voor Ajax en PSV, maar voor PSV is er ook nog een gerede kans op een gelijkspel (1-1). Het kampioenschap gloort voor Ajax. Niettemin, de bal is rond... #livbar #ajatot
 
@@ -24,13 +24,13 @@ Als je geïnteresseerd bent in de volledige lijst met modelvoorspellingen, bijv.
 
 ## Post Scriptum
 
-> Op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) heb ik **de dag voor de wedstrijd** het volgende commentaar toegevoegd
+> Op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) heb ik **de dag voor de wedstrijd op 12 mei 2019** het volgende commentaar toegevoegd
 
 Zoals de Engelsen zeggen: "put your money where your mouth is". En dus heb ik op winst voor AZ en de gelijkspelletjes 0-0 en 1-1 elk een eurootje ingezet. Volgens mijn Bayesiaanse model zijn de kansen op de Toto goksite van de Nederlandse Loterij te laag ingeschat, dus hier valt mogelijk wat te halen. Fingers crossed!
 
 ![](2019-05-10-3.png "Bron: Nederlandse Loterij")
 
-> Op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) heb ik **na afloop van de wedstrijd** het volgende commentaar toegevoegd
+> Op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) heb ik **na afloop van de wedstrijd op 12 mei 2019** het volgende commentaar toegevoegd
 
 Gewonnen! Nee, ik bedoel niet het kampioenschap van #Ajax, maar de Toto! Door de winst van #AZ met 3 euro inleg 4,15 euro verdiend, dus een winstmarge van 1,15 / 3 = 38%. Waar krijg je dat rendement tegenwoordig nog? In ieder geval niet op mijn spaarrekening. En dat allemaal mbv mijn #Bayesiaanse voorspelmodelletje. Dat belooft nog wat voor volgend seizoen. Ook maar eens nadenken hoe we dit #algoritme voor serieuzere zaken zinvol kunnen inzetten. #statistics #bestguess
 
