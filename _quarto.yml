@@ -27,8 +27,9 @@ website:
       Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a <br>
       {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/)
     right: |
-      Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/) <br>
-      View the source at [{{< fa brands github >}} GitHub](https://github.com/pjastam/blog-quarto)
+      Written in [{{< fa brands r-project >}}](https://www.r-project.org/) and rendered with [Quarto](https://quarto.org/) <br>
+      Published with [GitHub Actions](https://github.com/features/actions) at [{{< iconify bxl netlify >}} Netlify](https://netlify.com/) <br>
+      View the source code at [{{< fa brands github >}} GitHub](https://github.com/pjastam/blog-quarto)
 
 format:
   html:
