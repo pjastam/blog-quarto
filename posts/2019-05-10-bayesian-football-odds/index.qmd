@@ -4,7 +4,7 @@ description: "This is a rather short blog post, BUT it contains the references t
 author: "Piet Stam"
 date: "2019-05-10T18:00:00Z"
 categories: [sports, analytics]
-image: "featured.gif"
+image: "feature.png"
 image-alt: "Image credit: [**Wikimedia**](https://nl.wikipedia.org/wiki/Thomas_Bayes#/media/Bestand:Thomas_Bayes.gif)"
 ---
 

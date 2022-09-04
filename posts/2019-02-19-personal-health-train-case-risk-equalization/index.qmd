@@ -4,7 +4,7 @@ description: "The concept of the Personal Health Train promises a major step for
 author: "Piet Stam"
 date: "2019-02-19"
 categories: [risk equalization, digital strategy]
-image: "featured.jpg"
+image: "feature.png"
 image-alt: "Image credit: [**Kim Stellingwerf/RTV Drenthe**](https://www.rtvdrenthe.nl/nieuws/136382/met-de-trein-via-zwolle-houd-rekening-met-vertraging)"
 ---
 

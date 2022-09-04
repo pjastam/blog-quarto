@@ -3,11 +3,18 @@ project:
   resources: netlify.toml
 
 website:
-  title: "Home"
+  title: "Piet Stam"
+  
   site-url: "https://www.pietstam.nl"
 
   favicon: favicon.png
+  
+  twitter-card:
+    creator: "@pjastam"
+    site: "@pjastam"  
 
+  open-graph: true
+    
   navbar:
     right:
       - text: Blog
@@ -16,8 +23,6 @@ website:
         href: publications.qmd
       - icon: twitter
         href: https://twitter.com/pjastam
-      - icon: linkedin
-        href: https://www.linkedin.com/in/pjastam
       - icon: github
         href: https://github.com/pjastam
 
@@ -36,3 +41,6 @@ format:
     theme: 
       light: sketchy
       dark: slate
+      
+execute:
+  freeze: auto
