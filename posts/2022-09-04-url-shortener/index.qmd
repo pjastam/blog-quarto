@@ -1,0 +1,118 @@
+---
+title: "Shortening my URL shortener"
+description: ""
+author: "Piet Stam"
+date: "2022-09-04"
+categories: [digital strategy]
+image: "feature.png"
+image-alt: "Image credit: Photo by [Ben](https://unsplash.com/@gudguyben?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/keyboard-mechanical?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)"
+draft: false
+---
+
+# 
+
+## Use case
+
+In my presentations, I would like to refer people to the site where they can find the slides, but avoid those very long URLs that nobody can remember. So, instead of:
+
+`https://github.com/pjastam/talks/subdirectory/with/a/very/long/name/for/these/nice/presentation/slides`
+
+I want to have something like this:
+
+`https://pst.am/nice-presentation`
+
+Inspired by Andrew Heiss[^1], Kent C. Dodds[^2] and [^3], I managed to do so and will tell you how. In addition, since I was in the mood to make my workflow as short as possible, I went on to shorten the keystrokes in my local browser. There is a bonus section about this.
+
+[^1]: The shortened personal URL at [this slide](https://talks.andrewheiss.com/2022-03-22_uga-putting-everything-out-there/slides.html#1) triggered me
+[^2]: [GitHub repository](https://github.com/kentcdodds/netlify-shortener) for netlify-shortener
+[^3]: [Blog](https://hungryturtlecode.com/tutorials/shortlinks-netlify/) on building your own link shortener with Netlify
+
+## Prerequisites
+
+- A [{{< fa brands github >}} GitHub](https://github.com/) account (to set up a `_redirects` file)
+
+- A [{{< iconify bxl netlify >}} Netlify](https://netlify.com/) account (to execute the `_redirects` file)
+
+- A Brave/Chrome browser
+
+## Step-by-step guide: URL-shortener
+
+- Purchase a domain to use as your short link domain
+
+- Make up a very, very domain name (in my case, I imagined `pst.am` would be nice)
+  
+- Set up a new site at [{{< iconify bxl netlify >}} Netlify](https://netlify.com/)
+
+- Buy your domain name from [{{< iconify bxl netlify >}} Netlify](https://netlify.com/) during this set up
+  
+- Alternatively, buy your domain name from another registrar, which is what I did
+
+  - I went to [iwantmyname.com](https://iwantmyname.com/) and registered the domain name
+  
+  - At [{{< iconify bxl netlify >}} Netlify](https://netlify.com/), after the new site has been set up, find out how the name servers are called
+    ![](netlify-nameservers.png)
+
+  - At [iwantmyname.com](https://iwantmyname.com/), delegate the DNS of yor domain name to [{{< iconify bxl netlify >}} Netlify](https://netlify.com/)
+    ![](iwantmyname-nameservers.png)
+
+- Create a private git repository called `url-shortener` at [{{< fa brands github >}} GitHub](https://github.com/pjastam/url-shortener)
+  ![](github-repo.png)
+  
+- Create a `_redirects` file and add some initial configuration lines to map short links to full URLs
+  ![](github-redirects.png)
+
+- Login to [{{< iconify bxl netlify >}} Netlify](https://netlify.com/) and connect the [{{< fa brands github >}} GitHub](https://github.com/) repo
+
+- Enable automatic TLS certificates with Let’s Encrypt for your short domain name at [{{< iconify bxl netlify >}} Netlify](https://netlify.com/)
+
+- Wait until the domain name is served by [{{< iconify bxl netlify >}} Netlify](https://netlify.com/)'s DNS
+
+  - This may take up to 24 hours, depending on your registrar processing the change in nameservers
+
+- The first line of code in the `_redirects` file is a helper function for easily editing the `_redirects` file in your [{{< fa brands github >}} GitHub](https://github.com/) repository online
+
+  - Open your browser
+  - Type `pst.am/edit`
+  - Commit your changes
+
+- The second line of code in the `_redirects` file links to a default page, in this case the homepage of my website, if you type the short domain name without extension
+
+  - Open your browser
+  - Type `pst.am`
+  - Hit the enter key
+  
+- To add new redirects, start editing the `_redirects` file and add a line of code starting with a `\` followed by `a short word or abbreviation`, then at least one space, and finally the `URL` to which the short word or abbreviation should redirect.
+
+## Step-by-step guide: Keystrokes-shortener
+
+- Open your Brave/Chrome browser
+
+- Navigate to: Settings -\> Search Engine -\> Manage Search Engines and Safe Search -\> Site Search -\> Click the `Add` button
+
+- Fill out `pst.am` as the search engine, `:x` as the shortcut and the URL `https://pst.am/%s`
+  ![](brave-add.png)
+
+- Click the `Add` button
+  ![](brave-save.png)
+
+- Note that in this guide I use `:x` as a shortcut, you can use this too or replace it by another shortcut if you like
+
+- You can now edit the `_redirects` file in your [{{< fa brands github >}} GitHub](https://github.com/) repository online as follows
+
+  - Open your browser
+  - Type `:x`
+  - Press space bar or tab key
+  - Type `edit`
+  - Hit return key
+
+- Or, if you want to go to my homepage
+
+  - Open your browser
+  - Type `:x`
+  - Hit return key
+
+## A next step?
+
+I occasionally use my workflow to shorten a URL for a new presentation. Setting up new presentation slides does not happen every day in my case, so editing the \_redirects file online at [{{< fa brands github >}} GitHub](https://github.com/) every now and then is no bother. 
+
+But you may like to automate this part of the workflow if you need to shorten URLs on a more frequent basis, for example in case of creating your daily posts. Kent C. Dodds shows you how in [his video](https://www.youtube.com/watch?v=HL6paXyx6hM&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u) at {{< fa brands fa-youtube >}} YouTube. The downside of this is that those links will be rather cryptic. Like the ones you get if you use the bit.ly shortened URLs, for example. This makes the shortened URL difficult to remember.
