@@ -10,8 +10,8 @@ website:
   favicon: favicon.png
   
   twitter-card:
-    creator: "@pjastam"
-    site: "@pjastam"  
+    site: "@pjastam"
+    card-style: summary
 
   open-graph: true
     
@@ -38,9 +38,11 @@ website:
 
 format:
   html:
-    theme: 
+    theme:
       light: sketchy
       dark: slate
+      link-external-icon: false
+      link-external-newwindow: true
       
 execute:
   freeze: auto
