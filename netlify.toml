@@ -67,3 +67,6 @@
 [[redirects]]
   from = "/post/*"
   to = "/posts/:splat"
+  status = 301
+  force = true
+  
