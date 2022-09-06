@@ -3,7 +3,7 @@ title: "Piet Stam"
 subtitle: "entrepreneur & consultant"
 about:
   template: trestles
-  image: profile.jpg
+  image: profile.png
   image-shape: round
   links:
     - icon: twitter
