@@ -4,7 +4,7 @@ description: "Piet Stam, Peter Nobels and Marco Woesthuis propose ten privacy co
 author: "Piet Stam"
 date: "2020-04-12"
 categories: [digital transformation]
-image: "feature.png"
+image: "feature_bw.png"
 image-alt: "Image credit: [**Open Knowledge Foundation**](https://blog.okfn.org/2020/04/16/coronavirus-why-an-open-future-has-never-been-more-important/)"
 ---
 
