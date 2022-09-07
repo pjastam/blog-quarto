@@ -41,8 +41,8 @@ format:
     theme:
       light: sketchy
       dark: slate
-      link-external-icon: false
-      link-external-newwindow: true
+    link-external-icon: false
+    link-external-newwindow: true
       
 execute:
   freeze: auto
