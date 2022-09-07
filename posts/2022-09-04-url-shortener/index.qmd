@@ -1,9 +1,9 @@
 ---
 title: "Shortening my URL shortener"
-description: ""
+description: "In my presentation slides, I would like to refer people with easy-to-remember URLs. So I created an URL shortener (and shortened the use of it even more)."
 author: "Piet Stam"
 date: "2022-09-04"
-categories: [digital strategy]
+categories: [digital transformation]
 image: "feature.png"
 image-alt: "Image credit: Photo by [Ben](https://unsplash.com/@gudguyben?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/keyboard-mechanical?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)"
 draft: false
@@ -13,7 +13,7 @@ draft: false
 
 ## Use case
 
-In my presentations, I would like to refer people to the site where they can find the slides, but avoid those very long URLs that nobody can remember. So, instead of:
+In my presentation slides, I would like to refer people to the site where they can find the slides, but avoid those very long URLs that nobody can remember. So, instead of:
 
 `https://github.com/pjastam/talks/subdirectory/with/a/very/long/name/for/these/nice/presentation/slides`
 
@@ -35,7 +35,7 @@ Inspired by Andrew Heiss[^1], Kent C. Dodds[^2] and [^3], I managed to do so and
 
 - A Brave/Chrome browser
 
-## Step-by-step guide: URL-shortener
+## Step-by-step guide: URL shortener
 
 - Purchase a domain to use as your short link domain
 

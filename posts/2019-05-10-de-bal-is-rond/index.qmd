@@ -3,7 +3,7 @@ title: "The ball is round (in Dutch)"
 description: "I have predicted the results of the decisive matches in the Eredivisie season 2018/2019 with my hierarchical Bayesian Poisson model. Betting on these results gave me a decent return."
 author: "Piet Stam"
 date: "2019-05-10T21:00:00Z"
-categories: [sports, analytics]
+categories: [sports analytics]
 image: "feature.png"
 image-alt: "Image credit: [**René Bouwman/De Telegraaf**](https://www.telegraaf.nl/sport/2205027/van-bommel-ik-heb-de-bagage-die-nodig-is)"
 ---

@@ -3,7 +3,7 @@ title: "Coronavirus apps: better safe than sorry (in Dutch)"
 description: "Piet Stam, Peter Nobels and Marco Woesthuis propose ten privacy conditions that a safe corona app must meet."
 author: "Piet Stam"
 date: "2020-04-12"
-categories: [digital strategy]
+categories: [digital transformation]
 image: "feature.png"
 image-alt: "Image credit: [**Open Knowledge Foundation**](https://blog.okfn.org/2020/04/16/coronavirus-why-an-open-future-has-never-been-more-important/)"
 ---
