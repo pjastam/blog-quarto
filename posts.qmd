@@ -2,7 +2,9 @@
 title: "My blog posts"
 listing:
   contents: posts
-  feed: true
+  feed: 
+    items: 10
+    title: "Blog Piet Stam"
   sort: "date desc"
   type: grid
   categories: unnumbered
