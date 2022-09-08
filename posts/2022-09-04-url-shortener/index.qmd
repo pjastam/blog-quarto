@@ -6,7 +6,6 @@ date: "2022-09-04"
 categories: [digital transformation]
 image: "feature_bw.png"
 image-alt: "Image credit: Photo by [Ben](https://unsplash.com/@gudguyben?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/keyboard-mechanical?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)"
-draft: false
 ---
 
 # 
@@ -15,13 +14,13 @@ draft: false
 
 In my presentation slides, I would like to refer people to the site where they can find the slides, but avoid those very long URLs that nobody can remember. So, instead of:
 
-`https://github.com/pjastam/talks/subdirectory/with/a/very/long/name/for/these/nice/presentation/slides`
+`https://github.com/pjastam/talks/subdirectory/with/a/very/long/name/for/these/nice/slides`
 
 I want to have something like this:
 
 `https://pst.am/nice-presentation`
 
-Inspired by Andrew Heiss[^1], Kent C. Dodds[^2] and [^3], I managed to do so and will tell you how. In addition, since I was in the mood to make my workflow as short as possible, I went on to shorten the keystrokes in my local browser. There is a bonus section about this.
+Inspired by Andrew Heiss[^1], Kent C. Dodds[^2] and Adrian Henry[^3], I managed to do so and will tell you how. In addition, since I was in the mood to make my workflow as short as possible, I went on to shorten the keystrokes in my local browser. There is a bonus section about this.
 
 [^1]: The shortened personal URL at [this slide](https://talks.andrewheiss.com/2022-03-22_uga-putting-everything-out-there/slides.html#1) triggered me
 [^2]: [GitHub repository](https://github.com/kentcdodds/netlify-shortener) for netlify-shortener
