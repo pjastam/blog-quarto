@@ -6,6 +6,7 @@ date: "2019-05-10T18:00:00Z"
 categories: [sports analytics, digital transformation]
 image: "feature.png"
 image-alt: "Image credit: [**Wikimedia**](https://nl.wikipedia.org/wiki/Thomas_Bayes#/media/Bestand:Thomas_Bayes.gif)"
+reference-location: margin
 ---
 
 We estimated the odds of football matches in the last two weeks of the 2018/2019 Dutch Eredivisie football competiton. All results and my explanations can be found [here](http://htmlpreview.github.io/?https://github.com/pjastam/r-bayesian-football-odds/blob/1409c9e8bbcfe92d8526e2fc866e0f7a57549d60/NL_eredivisie_2014_2019.nb.html).

@@ -6,9 +6,8 @@ date: "2022-09-04"
 categories: [digital transformation]
 image: "feature_bw.png"
 image-alt: "Image credit: Photo by [Ben](https://unsplash.com/@gudguyben?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/keyboard-mechanical?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)"
+reference-location: margin
 ---
-
-# 
 
 ## Use case
 

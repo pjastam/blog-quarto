@@ -6,6 +6,7 @@ date: "2018-06-04"
 categories: [sports analytics, digital transformation]
 image: "feature_bw.png"
 image-alt: "Image credit: [**Jesse Stam**](http://jesse-stam.nl/wp-content/gallery/training-thialf-24-okt-2017/DSC_9747.JPG)"
+reference-location: margin
 ---
 
 A Docker image of the [Shiny app](https://pjastam.shinyapps.io/speedskating/) for talent scouting & development of junior speed skaters was created. It is available for download at Docker Hub [here](https://hub.docker.com/r/pjastam/shiny-speedskating/). You can also find more about the how to there. An interactive demo of the (non-Dockerized) Shiny app can be found [here](https://pjastam.shinyapps.io/speedskating/).

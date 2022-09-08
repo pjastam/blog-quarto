@@ -6,6 +6,7 @@ date: "2019-05-10T21:00:00Z"
 categories: [sports analytics]
 image: "feature_bw.png"
 image-alt: "Image credit: [**René Bouwman/De Telegraaf**](https://www.telegraaf.nl/sport/2205027/van-bommel-ik-heb-de-bagage-die-nodig-is)"
+reference-location: margin
 ---
 
 > Deze blog heb ik op [LinkedIn](https://www.linkedin.com/pulse/de-bal-rond-piet-stam/) gepubliceerd en is hier integraal overgenomen om de openbare beschikbaarheid te garanderen.

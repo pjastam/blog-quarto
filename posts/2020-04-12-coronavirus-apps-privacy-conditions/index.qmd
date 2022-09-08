@@ -6,6 +6,7 @@ date: "2020-04-12"
 categories: [digital transformation]
 image: "feature_bw.png"
 image-alt: "Image credit: [**Open Knowledge Foundation**](https://blog.okfn.org/2020/04/16/coronavirus-why-an-open-future-has-never-been-more-important/)"
+reference-location: margin
 ---
 
 Het kabinet kondigt twee apps aan voor het monitoren en beheersen van de verspreiding van het coronavirus. Eén app vertelt je of je in de buurt bent geweest van een andere gebruiker, die besmet blijkt te zijn. Je krijgt dan het advies om binnen te blijven. De tweede app die het kabinet aankondigt is de al bestaande app van het OLVG-ziekenhuis in Amsterdam. Door je temperatuur en klachten over kortademigheid, keelpijn en verkoudheid in de app in te vullen, kan een medisch team van een ziekenhuis aan de hand van RIVM-richtlijnen uw risico op een besmetting en zorgbehoefte van een afstand inschatten.

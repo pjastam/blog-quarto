@@ -6,6 +6,7 @@ date: "2019-02-19"
 categories: [risk equalization, digital transformation]
 image: "feature_bw.png"
 image-alt: "Image credit: [**Kim Stellingwerf/RTV Drenthe**](https://www.rtvdrenthe.nl/nieuws/136382/met-de-trein-via-zwolle-houd-rekening-met-vertraging)"
+reference-location: margin
 ---
 
 > Deze blog van mijn hand heb ik op bovenstaande datum op [LinkedIn](https://www.linkedin.com/pulse/personal-health-train-casus-risicoverevening-piet-stam/) gepubliceerd en is hier integraal overgenomen om de openbare beschikbaarheid te garanderen.
