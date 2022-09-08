@@ -42,6 +42,7 @@ format:
       dark: slate
     link-external-icon: false
     link-external-newwindow: true
+    link-external-filter: ^(?:http:|https:)\/\/www\.pietstam\.nl\/custom
       
 execute:
   freeze: auto
