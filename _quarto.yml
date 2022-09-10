@@ -1,6 +1,8 @@
 project:
   type: website
-  resources: netlify.toml
+  resources:
+  - netlify.toml
+  - BingSiteAuth.xml
 
 website:
   title: "Piet Stam"
