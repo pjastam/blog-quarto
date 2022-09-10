@@ -2,9 +2,8 @@
 title: "Piet Stam"
 subtitle: "Entrepreneur, consultant & scientist"
 
-description-meta: "Entrepreneur, consultant & scientist. Passionate about observational data, computer code and human intelligence."
+description-meta: "Entrepreneur, consultant & scientist. My passion is finding the right answers with observational data, computer code and human intelligence."
 image: "profile.png"
-description: "Entrepreneur, consultant & scientist. Passionate about observational data, computer code and human intelligence."
 
 about:
   template: trestles
