@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <users>
-	<user>${{ secrets.BING_SITE_AUTH }}</user>
+	<user>3AD7366935C8CA321EE76F342612685C</user>
 </users>
