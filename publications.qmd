@@ -1,5 +1,8 @@
 ---
-title: My recent publications
+title: "My recent publications"
+
+description-meta: "Entrepreneur, consultant & scientist. Passionate about observational data, computer code and human intelligence."
+image: "profile.png"
 ---
 
 <script>

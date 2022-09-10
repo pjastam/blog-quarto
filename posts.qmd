@@ -1,10 +1,14 @@
 ---
 title: "My blog posts"
+
+description-meta: "Entrepreneur, consultant & scientist. Passionate about observational data, computer code and human intelligence."
+image: "profile.png"
+
 listing:
   contents: posts
   feed: 
     items: 10
-    title: "Blog Piet Stam"
+    title: "Piet Stam - My blog posts"
   sort: "date desc"
   type: grid
   categories: unnumbered
