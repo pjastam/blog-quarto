@@ -21,6 +21,8 @@ website:
         href: posts.qmd
       - text: Publications
         href: publications.qmd
+      - text: Talks
+        href: "https://talks.pietstam.nl"
       - icon: twitter
         href: https://twitter.com/pjastam
       - icon: github
