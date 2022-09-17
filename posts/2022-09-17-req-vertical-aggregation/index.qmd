@@ -1,0 +1,52 @@
+---
+title: "Vertical aggregation applied to risk equalization"
+description: "Vertical aggregation of data can save computational time in case of linear regression. Here we demonstrate its use in the context of risk equalization."
+author: "Piet Stam"
+date: "2022-09-17"
+categories: [digital transformation]
+image: ""
+image-alt: ""
+reference-location: document
+draft: true
+---
+
+## Use case
+
+In the research field of risk equalization, health care expenditures are linearly regressed on indicators of health status such as age, gender and diagnoses. In the Netherlands the parameters of this regression are estimated based on a national data set with about 17 million records, one record for each inhabitant. However, before the estimation of the parameters, these data are vertically aggregated by the risk classes in order to save computer time. A risk class is defined as a unique combination of the predictors in the linear regression.
+
+## Questions
+
+1.  How does this procedure work?
+2.  Are the parameter estimates the same as those based on the individual level data?
+3.  What about the estimates of the standard errors?
+4.  How to deal with weighted data?
+
+## From the literature
+
+Several algorithms for calculating the variance can be found [on Wikipedia](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm).
+
+### Running statistical measures in C++
+
+Tim shows an algorithm by Welford (1962) coded in C## [here](https://stats.stackexchange.com/questions/235129/online-estimation-of-variance-with-limited-memory).[^1]
+
+[John D. Cook](https://www.johndcook.com/blog/top/) describes an [algorithm for the variance](https://www.johndcook.com/blog/standard_deviation/) based on Knuth (1968).[^2] [Note that Knuth on his part based his work on that of Welford.]{.aside} Later on, he added the [algorithms for skewness and kurtosis](https://www.johndcook.com/blog/skewness_kurtosis/) later on. 
+
+### Running statistical measures in Java
+
+[Aurelian Tutuianu](https://github.com/padreati/) [wrote a formula](https://stats.stackexchange.com/a/199941) for calculating the overall mean sequentially. He has coded algorithms for mean, min, max, variance, standard deviation, skewness and kurtosis [in Java](https://github.com/padreati/rapaio/blob/master/src/rapaio/core/stat/OnlineStat.java). His work is an extension over the algorithm presented by [John D Cook](https://www.johndcook.com/blog/top/).
+
+### Running statistical measures in Julia
+
+John Myles White implemented and extended the algorithms presented by [John D Cook](https://www.johndcook.com/blog/top/) in [Julia](https://github.com/johnmyleswhite/StreamStats.jl). Eventually this code was deprecated in favor of [these algorithms](https://github.com/joshday/OnlineStats.jl) by Josh Day. The accompanying website with all instructions can be found [here](https://joshday.github.io/OnlineStats.jl/latest/).
+
+## Do not use E[X^2] - (E[X])^2
+
+See [this reference](https://stackoverflow.com/questions/24373711/how-to-compute-the-global-variance-square-standard-deviation-in-a-parallel-app).
+
+## How do we use this in risk adjustment?
+
+[^1]: Welford, B. P. (1962). [Note on a method for calculating corrected sums of squares and products](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.302.7503&rep=rep1&type=pdf). Technometrics 4(3): 419-420.
+
+[^2]: Knuth, Donald E. (1968) [Art of Computer Programming](https://www-cs-faculty.stanford.edu/~knuth/taocp.html), Vol 2, page 232, 3rd edition
+
+## 
