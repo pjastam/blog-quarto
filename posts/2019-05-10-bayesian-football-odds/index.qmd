@@ -7,8 +7,22 @@ categories: [sports analytics, digital transformation]
 image: "feature.png"
 image-alt: "Image credit: [**Wikimedia**](https://nl.wikipedia.org/wiki/Thomas_Bayes#/media/Bestand:Thomas_Bayes.gif)"
 reference-location: margin
+filters:
+  - social-share
+share:
+  permalink: "https://pietstam.nl/posts/"
+  note: "Please share this post"
+  twitter: true
+  linkedin: true
+margin-header: |
+  *Share this post* \
+  {{< fa brands twitter >}} {{< fa brands linkedin >}}
 ---
 
 We estimated the odds of football matches in the last two weeks of the 2018/2019 Dutch Eredivisie football competiton. All results and my explanations can be found [here](http://htmlpreview.github.io/?https://github.com/pjastam/r-bayesian-football-odds/blob/1409c9e8bbcfe92d8526e2fc866e0f7a57549d60/NL_eredivisie_2014_2019.nb.html).
 
 If you are interested in the code of the hierarchical Bayesian Poisson model, you can find that on [GitHub](https://github.com/pjastam/r-bayesian-football-odds).
+
+[Share this post {{< fa brands twitter >}} {{< fa brands linkedin >}}]{.aside}
+
+#### Share this post {{< fa brands twitter >}} {{< fa brands linkedin >}}
