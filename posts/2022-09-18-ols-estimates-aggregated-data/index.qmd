@@ -34,37 +34,36 @@ In the research field of risk equalization, health care expenditures are linearl
 library(tidymodels)  # for the parsnip package, along with the rest of tidymodels
 
 set.seed(2022)
-sim_data_indiv <- sim_regression(num_samples = 10,  method ="van_der_laan_2007_1",  intercept = 2500, std_dev =10000,  factors =TRUE, outcome = "regression")
-
+sim_data_indiv <- sim_regression(num_samples = 10,  method ="van_der_laan_2007_1",  std_dev =1,  factors=FALSE)
 lm_model <- linear_reg() %>% 
-            set_engine('lm') %>% # adds lm implementation of linear regression
-            set_mode('regression')
+  set_engine('lm') %>% # adds lm implementation of linear regression
+  set_mode('regression')
 
 # View object properties
 lm_model
 
 lm_fit <- lm_model %>% 
-          fit(Sales ~ ., data = sim_data_indiv)
+  fit(outcome ~ ., data = sim_data_indiv)
 
 # View lm_fit properties
 lm_fit
 
 # Aggregate data
 
-min_max <- list(
-  sum = ~sum(.x, na.rm = TRUE), 
-  max = ~max(.x, na.rm = TRUE)
+funcs <- list(
+  sum = ~sum(.x, na.rm = TRUE)
 )
-sim_data_aggr %>%
-  group_by(x1:x10) %>%
-  summarise(across(c(y, weight, x1:x10), min_max))
+sim_data_aggr <- sim_data_indiv %>%
+  group_by(across(c(predictor_01:predictor_10))) %>%
+  summarise(across(c(outcome, predictor_01:predictor_10), funcs))
 
 lm_fit_aggr <- lm_model %>%
-  
+  fit(outcome ~ ., data = sim_data_aggr)
 
+lm_fit_aggr
 ```
 
-# References
+## References
 
 [^1]: Welford, B. P. (1962). [Note on a method for calculating corrected sums of squares and products](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.302.7503&rep=rep1&type=pdf). Technometrics 4(3): 419-420.
 
