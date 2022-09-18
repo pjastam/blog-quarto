@@ -1,0 +1,45 @@
+---
+title: "Derive least-squares betas and standard errors from weighted aggregated data"
+description: "It may save time and money to aggregate data before running a regression.I will show you how to derive the parameter estimates that correspond to a regression with individual data."
+author: "Piet Stam"
+date: "2022-09-18"
+categories: [digital transformation]
+image: ""
+image-alt: ""
+reference-location: document
+draft: true
+editor: visual
+---
+
+## Use case
+
+In the research field of risk equalization, health care expenditures are linearly regressed on indicators of health status such as age, gender and diagnoses. In the Netherlands the parameters of this regression are estimated based on a national data set with about 17 million records, one record for each inhabitant. However, before the estimation of the parameters, these data are vertically aggregated by the risk classes in order to save computer time. A risk class is defined as a unique combination of the predictors in the linear regression.
+
+## Questions
+
+1.  How does this procedure work?
+2.  Are the parameter estimates the same as those based on the individual level data?
+3.  What about the estimates of the standard errors?
+4.  How to deal with weighted data?
+
+## From the literature
+
+(How to calculate standard errors weighted least-squares on aggregated data)[https://stats.stackexchange.com/questions/83223/standard-errors-in-weighted-least-squares-on-aggregated-data]
+
+(Mean and variances for aggregate data with multiple columns and weights)[https://dplyr.tidyverse.org/articles/colwise.html]
+
+## Aggregate data
+
+```{r}
+library(tidymodels)  # for the parsnip package, along with the rest of tidymodels
+```
+```{r}
+linear_reg(mode = "regression", engine = "lm", penalty = NULL, mixture = NULL)
+```
+
+
+
+
+[^1]: Welford, B. P. (1962). [Note on a method for calculating corrected sums of squares and products](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.302.7503&rep=rep1&type=pdf). Technometrics 4(3): 419-420.
+
+[^2]: Knuth, Donald E. (1968) [Art of Computer Programming](https://www-cs-faculty.stanford.edu/~knuth/taocp.html), Vol 2, page 232, 3rd edition
