@@ -1,0 +1,111 @@
+---
+title: "Use tidymodels with weighted and unweighted data"
+description: "It took some time to figure out how to use frequency weights when fitting a model in the tidymodels framework. Here is the code to do that."
+author: "Piet Stam"
+date: "2022-09-19"
+categories: [digital transformation]
+image: "luis-reyes-mTorQ9gFfOg-unsplash.png"
+image-alt: 'Photo by <a href="https://unsplash.com/@tuga760?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Luis Reyes</a> on <a href="https://unsplash.com/s/photos/weights?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>'
+reference-location: document
+draft: true
+editor: visual
+---
+
+## Use case
+
+The [tidymodels](https://www.tidymodels.org/) framework is a collection of packages for modeling and machine learning using tidyverse principles. The [get started](https://www.tidymodels.org/start/) case study helps to take the first steps. Another helpful source is [lesson 10](https://www.gmudatamining.com/lesson-10-r-tutorial.html) of an R tutorial from a [data mining course](https://www.gmudatamining.com/index.html) at George Mason University.
+
+Building on these basics, my next step is to apply frequency weights when estimating a linear regression model in the tidymodels way of coding. However, [this blog post](https://www.tidyverse.org/blog/2022/05/case-weights/) shows that this is a feature [under development](https://github.com/tidymodels/planning/tree/main/case-weights) and therefore some of my first attempts to create a reproducible example failed.
+
+The tidymodels [how-to add case weights to a workflow](https://workflows.tidymodels.org/reference/add_case_weights.html?q=add_case#ref-examples) gives some examples with code that helps to crack the case. Below I give the code for two reproducible examples, one example of model estimation without using weights and one with using weights.
+
+## Data and method
+
+The models that I estimate are linear regression models with a set of predictors and one numeric outcome variable. The parameters of this model are estimated by ordinary least squares.
+
+I use the `car_prices` data set for the examples and try to predict the car prices with the care brands as predictors. Note that, as a consequence, in my examples the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables. This makes the examples easy to understand, but the code may apply to a wider range of variables nonetheless. I use `mileage` as the weighting variable.
+
+Let us start with loading the data into memory.
+
+```{r}
+# Load library for the recipe. parsnip, workflow and hardhat packages, along with the rest of tidymodels
+library(tidymodels)
+```
+
+Now we select only the relevant variables. Although the weights are not yet used in the first example, `mileage` is already defined as the weighting variable in the data set.
+
+```{r}
+# Create a data set with one non-negative continuous variable and uncorrelated dummy variables as predictors
+db <- select(car_prices, Price, Buick:Saturn, Mileage) %>% 
+  mutate(Mileage = frequency_weights(Mileage))
+str(db)
+```
+
+## Example 1: linear regression without weights
+
+Now on with the first example. In the code below we define the `recipe`, define the model and set mode and engine. These are combined into a workflow. Afterwards we look at the properties of these objects to check if these are as expected. Note that `Saturn` is the reference dummy variable of my choice (i.e. in effect its coefficient is set to zero by default) and is thus excluded from the regression.
+
+```{r}
+# Get data ready for modeling with recipe package
+recipe1 <-
+  db %>% 
+  recipe(Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab) # add all dummy variables but one
+
+# Define model, mode and engine with parsnip package
+model1 <-
+  linear_reg() %>% # adds the basic model type
+  set_engine('lm') %>% # adds the computational engine to estimate the model parameters
+  set_mode('regression') # adds the modeling context in which it will be used
+
+# Bundle pre-processing, modeling, and post-processing with workflow package
+workflow1 <-
+  workflow() %>%
+  add_recipe(recipe1) %>%
+  add_model(model1)
+
+# View object properties
+recipe1
+model1
+workflow1
+```
+
+Now that the objects look alright, the model estimation can be performed and the parameter estimates are printed.
+
+```{r}
+# Now estimate the model via a single call to fit()
+fit1 <- fit(workflow1, data = db)
+
+# View fit1 properties
+tidy(fit1)
+glance(fit1)
+```
+
+## Example 2: linear regression with weights
+
+Then come the weights. The first thought is to update the current workflow with a line of code to make clear that weights should be used. However, this approach does not produce the desired result.
+
+Therefore, an alternative approach is followed. Instead of building upon the blocks of the first example, we start with a new `workflow()` object and add an `add_case_weights` line of code to it. Next, one would expect a line of code with an `add_recipe` command, but for some reason this did not work after a "few" tries. Instead, we use `add_formula` with the regression formula as an argument. Lastly, surprisingly conventional, an `add_model` command is added.
+
+```{r}
+workflow2 <-
+  workflow() %>%
+  add_case_weights(Mileage) %>%
+  add_formula(Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab) %>%
+  add_model(model1)
+
+workflow2
+```
+
+Now the parameters are estimated with one line of code as follows.
+
+```{r}
+fit2 <- fit(workflow2, db)
+
+# View fit2 properties
+tidy(fit2)
+glance(fit2)
+```
+
+This is a nice first try! With the two examples above it is possible to experiment further in the hope of alternative/shorter routes to the estimation results. In the mean time, we wait for the tidymodels to include weights in the relevant packages. If you are inspired by these two examples (or not) and have some new ideas for progress, do not hesitate to [give feedback to the Tidyverse developers](https://www.tidyverse.org/blog/2022/05/case-weights/#getting-feedback).
+
+Happy coding!
