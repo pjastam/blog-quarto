@@ -33,7 +33,6 @@ library(modeldata)
 
 Now we select only the relevant variables. Although the weights are not yet used in the first example, `mileage` is already defined as the weighting variable in the data set.
 
-The code can also be applied for unweighted linear regression, however. A simple trick is to create a unity weight variable, which in this example boils down to replacing the second line by `mutate(Mileage = 1)`.
 
 ```{r}
 # Create a data set with one non-negative continuous variable and uncorrelated dummy variables as predictors
@@ -41,6 +40,8 @@ db1 <- select(car_prices, Price, Buick:Saturn, Mileage) %>%
   mutate(Mileage = Mileage/sum(Mileage))
 str(db1)
 ```
+
+The above code can also be applied for unweighted linear regression, however. A simple trick is to create a unity weight variable, which in this example boils down to replacing the second line by `mutate(Mileage = 1)`.
 
 ## Linear regression with individual data
 
@@ -66,7 +67,7 @@ The estimates are exactly equal to those in the regression output, so we are goo
 
 ## Linear regression with aggregated data
 
-Next we aggregate the data and fit a second model.
+Next we vertically aggregate the microdata.
 
 ```{r}
 # Aggregate data
@@ -75,25 +76,30 @@ db2 <-
   group_by(across(Buick:Saturn)) %>% 
   summarise(Price = weighted.mean(Price, Mileage), Mileage = sum(Mileage)) %>% 
   ungroup()
+```
 
+Now we estimate the parameters of the same regression model but based on the vertically aggregated data instead.
+
+microdata.
+
+```{r}
 # Fit a linear regression based on aggregated data
 fit2 <- lm(formula = Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab, data = db2, weights = Mileage) # Exclude one dummy variable
 
 # View fit1 properties
 summary(fit2)
 ```
-
 These results are striking for three reasons:
 
 1.  the betas are identical to the betas when using the data at the individual level; that is a good thing :-)
 2.  the R-squared is at the maximum value of 1; that is too good to be true ;-)
 3.  most other statistics from the regression are infinite numbers or not a number (NaN); and that is a shame!
 
-The first result is what we hoped for. The second result tells us that the model fits the data perfectly. In other words, the predicted `Prices` of the six car brands are exactly equal to the actual `Prices`. This is true at the aggregate level (6 predictors predict the 6 observations perfectly), but it is certainly not the case for the model estimated above at the individual level. This situation at the same time is the reason for result 3. A perfect model fit implies that the standard error is zero for all observations. As the standard error plays a role in the calculation of most statistics, this results in lots of infinite numbers (when dividing by 0) or `NaN`s (when 0 is divided by 0). The solution to derive the right results is to do some reverse engineering.
+The first result is what we hoped for. The second result tells us that the model fits the data perfectly. In other words, the predicted `Prices` of the six car brands are exactly equal to the actual `Prices`. This is true at the aggregate level (6 predictors predict the 6 observations perfectly), but it is certainly not the case for the model estimated above at the individual level. This situation at the same time is the reason for result 3. A perfect model fit implies that the standard error is zero for all observations. As the standard error plays a role in the calculation of most statistics, this results in lots of infinite numbers (when dividing by 0) or `NaN`s (when 0 is divided by 0). The solution to derive the right results is to do some reverse engineering. 
 
 ## Reverse engineered standard errors
 
-First we are going to reverse engineer the original standard errors for the `betas`. The first step is to apply the betas from the regression with aggregated data to the individual data. This gives us the predicted `Prices` at the individual level. Subtracting these from actual `Prices` gives `sigma2`.
+The first to reverse engineer the original standard errors is to apply the `betas` from the above regression to the matrix of the regression with individual data. This gives us the predicted `Prices` at the individual level. Subtracting these from actual `Prices` gives `sigma2`.
 
 The second step is to calculate the inverse of t(X) times X. X is the regression matrix, so we have to drop Saturn and add a unity vector to represent the intercept. The standard errors of the `betas` are derived by multiplying this result with `sigma2` and taking the square root of the elements at the diagonal of the matrix.
 
