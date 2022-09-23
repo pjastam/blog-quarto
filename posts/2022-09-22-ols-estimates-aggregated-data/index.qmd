@@ -1,6 +1,6 @@
 ---
 title: "Calculate least-squares betas and standard errors from aggregated microdata"
-description: "It saves computer time to aggregate large microdata sets before running a regression. Here is how to reverse engineer the betas and standard errors for the original microdata."
+description: "It saves computer time to vertically aggregate large microdata sets before running a regression. Here is how to reverse engineer the betas and standard errors for the original microdata."
 author: "Piet Stam"
 date: "2022-09-22"
 categories: [digital transformation]
@@ -13,13 +13,15 @@ editor: visual
 
 ## Use case
 
-Risk equalization is my main field of scientific research. With risk equalization, health care expenditures are linearly regressed on indicators of health status such as age, gender and diagnoses. In the Netherlands the parameters of this regression are estimated based on a national set of microdata with about 17 million records, one record for each inhabitant. Thus the set of microdata is BIG.
+Risk equalization is my main field of scientific research. With risk equalization, health care expenditures are linearly regressed on indicators of health status such as age, gender and diagnoses. In the Netherlands the parameters of this regression are estimated based on a national set of microdata with about 17 million records, one record for each inhabitant. And lots of (0/1) dummy variables as predictors. Thus the set of microdata is BIG.
 
-To save computer time, before running the regression, these data are vertically aggregated by the risk classes. A risk class is defined as a unique combination of the predictors in the linear regression. The efficiency gain of this procedure is larger, the larger the number of records in the microdata set.
+To save computer time, before running the regression, these data are vertically aggregated by the risk classes. A risk class is defined as a unique combination of the predictors in the linear regression. The efficiency gain of this procedure is larger, the larger the number of records and dummy variables in the microdata set.
+
+I will first show the regression results, had we done the calculations based on the microdata. Second, the results are shown for the regression based kn vertically aggregated data. This will return the same `beta` estimates as those based upon the disaggregated microdata, but with zero standard deviations. Third, the code is given to derive the original standard deviations based upon the disaggregated data. As a bonus, all calculations are performed with a weighting variable which may apply in your use case. But let's start with loading an example data set.
 
 ## Data and method
 
-I use the `car_prices` data set for the examples and try to predict the car prices with the care brands as predictors. Note that, as a consequence, in my examples the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables. This makes the examples easy to understand, but the code may apply to a wider range of variables nonetheless. I use `mileage` as the weighting variable.
+I use the `car_prices` data set as an example and try to predict the car prices with the care brands as predictors. Note that, as a consequence, in my examples the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables. This makes the example easy to understand, and closely resembles the characteristics of the data used for risk equalization, but the code may apply to a wider range of variables nonetheless. I use `mileage` as the weighting variable.
 
 Let us start with loading the data into memory.
 
@@ -42,7 +44,7 @@ str(db1)
 
 ## Linear regression with individual data
 
-Now on with the first example. In the code below we define the `recipe`, define the model and set mode and engine. These are combined into a workflow. Afterwards we look at the properties of these objects to check if these are as expected. Note that `Saturn` is the reference dummy variable of my choice (i.e. in effect its coefficient is set to zero by default) and is thus excluded from the regression.
+Now on with the first example. These lines of code gives us the parameter estimates for the linear regression based on the microdata. Note that `Saturn` is the reference dummy variable of my choice (i.e. in effect its coefficient is set to zero by default) and is thus excluded from the regression.
 
 ```{r}
 # Fit a linear regression based on individual data
@@ -52,13 +54,15 @@ fit1 <- lm(formula = Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab, data
 summary(fit1)
 ```
 
-~~Just for fun~~ just as a check, we calculate the standard errors also by hand. This will become handy in the next section, as with estimation based on aggregated data we can not reverse engineer the standard errors other than by hand. We start with calculating `sigma2` by hand too, although this is readily available from the `fit1` object as `sigma(fit1)`\^2.
+~~Just for fun~~ just as a check, we calculate the standard errors also by hand. This will become handy in the next section, as with estimation based on aggregated data we can not reverse engineer the standard errors in another way than by hand. We start with calculating `sigma2` by hand too, although this is readily available from the `fit1` object as `sigma(fit1)`\^2.
 
 ```{r}
 fit1_sigma2 <- sum(weighted.residuals(fit1)^2)/df.residual(fit1)
 fit1_covmatrix <- fit1_sigma2 * chol2inv(qr(fit1)$qr)
 fit1_stderr <- sqrt(diag(fit1_covmatrix))
 ```
+
+The estimates are exactly equal to those in the regression output, so we are good to go to the next step.
 
 ## Linear regression with aggregated data
 
