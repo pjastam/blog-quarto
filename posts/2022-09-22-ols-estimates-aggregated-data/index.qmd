@@ -1,6 +1,6 @@
 ---
-title: "Calculate least-squares betas and standard errors from aggregated microdata"
-description: "It saves computer time to vertically aggregate large microdata sets before running a regression. Here is how to reverse engineer the betas and standard errors for the original microdata."
+title: "Aggregate microdata to estimate linear regressions efficiently"
+description: "It saves computer time to vertically aggregate large microdata sets before running a regression. Here is how to reverse engineer the regression coefficients and standard errors for the original microdata."
 author: "Piet Stam"
 date: "2022-09-22"
 categories: [digital transformation]
@@ -15,13 +15,13 @@ editor: visual
 
 Risk equalization is my main field of scientific research. With risk equalization, health care expenditures are linearly regressed on indicators of health status such as age, gender and diagnoses. In the Netherlands the parameters of this regression are estimated based on a national set of microdata with about 17 million records, one record for each inhabitant. And lots of (0/1) dummy variables as predictors. Thus the set of microdata is BIG.
 
-To save computer time, before running the regression, these data are vertically aggregated by the risk classes. A risk class is defined as a unique combination of the predictors in the linear regression. The efficiency gain of this procedure is larger, the larger the number of records and dummy variables in the microdata set.
+To save computer time, before running the regression, these data are [vertically aggregated](https://en.wikipedia.org/wiki/Aggregate_data) by the risk classes. A risk class is defined as a unique combination of the predictors in the linear regression. The efficiency gain of this procedure is larger, the larger the number of records and dummy variables in the microdata set.
 
-Here is the code to vertically aggregate data and run a regression to get estimates of beta coefficients identical to those derived with the microdata. However, standard errors do not automatically result from the regression with vertically aggregated data. The code for calculating the standard errors to overcome this problem is given. As a bonus, all calculations are illustrated with a weighting variable. 
+Here is the code to vertically aggregate data and run a regression to get estimates of regression coefficients identical to those derived with the microdata. However, standard errors do not automatically result from the regression with vertically aggregated data. The code for calculating the standard errors to overcome this problem is therefore also given. As a bonus, all calculations are illustrated with a weighting variable.
 
 ## Data and method
 
-Let's start with loading the necessary packages into memory. I use `car_prices` from the `modeldata` package for the example.
+Let's start with loading the necessary packages into memory. I use the `car_prices` variable from the `modeldata` package for the example.
 
 ```{r}
 # Load library for the recipe. parsnip, workflow and hardhat packages, along with the rest of tidymodels
@@ -29,7 +29,7 @@ library(dplyr)
 library(modeldata)
 ```
 
-We will predict car prices with care brands and select these variables from the `car_prices` microdata set. I use `mileage` as the weighting variable. 
+We will predict car prices with care brands and select these variables from the `car_prices` microdata set. I use `mileage` as the weighting variable. [Note that the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables, similar to the use case.]{.aside}
 
 ```{r}
 # Create a data set with one non-negative continuous variable and uncorrelated dummy variables as predictors
@@ -38,9 +38,7 @@ db1 <- select(car_prices, Price, Buick:Saturn, Mileage) %>%
 str(db1)
 ```
 
-This code can also be applied for unweighted linear regression. To do this, simply replace the second line by `mutate(Mileage = 1)`.
-
-Note that in this example the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables. This corresponds with the characteristics of the outcome variable and predictors in the use case described above.
+This code can also be applied to an unweighted linear regression. To do this, simply replace the second line by `mutate(Mileage = 1)`.
 
 ## Linear regression with microdata
 
@@ -54,19 +52,29 @@ fit1 <- lm(formula = Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab, data
 summary(fit1)
 ```
 
-~~Just for fun~~ just as a check, we calculate the standard errors also by hand. This will become handy later on, as will need this code to reverse engineer the standard errors with aggregated data. Also, we calculate `sigma` squared by hand in this code, although this is readily available from the `fit1` object as `sigma(fit1)^2`.
+~~Just for fun~~ Just to check, we calculate the standard errors also by hand. This will become handy in the next section, as with estimation based on aggregate data we can not reverse engineer the standard errors in another way than by hand. The the standard errors of the regression coefficients are (the square root of) the diagnonal of the covariance matrix $\hat{\sigma}^2(X'X)^{-1}$ where
+
+$$\hat{\sigma}^2 = \frac{1}{N-K} \sum_{i=1}^N (Y_i - \hat{Y})^2$$
+
+is the squared residual standard error (i.e. the square of `sigma(fit1)` which equals `r sigma(fit1)`), $N$ the total number of records in the data set, $K$ the number of explanatory variables in the regression (including the constant term), $X$ the $N$ x $K$ matrix with explanatory variables, $Y_i$ the outcome variable for individual $i$ and $\hat{Y}$ the predictions. We calculate the standard errors in three steps: [The code `chol2inv(qr(fit1)$qr)` calculates $(X'X)^{-1}$ from a QR decomposition of the $X$ matrix, i.e. $X = QR$, with $R$ a triangular matrix. Because $X'X = R'Q'QR = R'R$ as $Q'Q = I$ by construction, the inverse of $X'X$ is found by (more efficient) inversion of $R'R$ instead.]{.aside}
 
 ```{r}
+# Calculate sigma squared
 fit1_sigma2 <- sum(weighted.residuals(fit1)^2)/df.residual(fit1)
+fit1_sigma2
+# Calculate the covariance matrix
 fit1_covmatrix <- fit1_sigma2 * chol2inv(qr(fit1)$qr)
+fit1_covmatrix
+# Calculate the standard errors for the regression coefficients
 fit1_stderr <- sqrt(diag(fit1_covmatrix))
+fit1_stderr
 ```
 
-The estimates are exactly equal to those in the regression output, so we are good to go ahead.
+The squared residual standard error and standard errors for the regression estimates are identical to that in the `fit1` object (see the `summary(fit1)` output), so we are good to go to the next step.
 
-## Linear regression with aggregated data
+## Linear regression with aggregate data
 
-Next we vertically aggregate the microdata. For each unique combination of car brands (including `Saturn`), there is now one record with mean `Price`, the sum of `Mileage` and one car brand dummy variable set to one (all others equal zero). 
+The next step is to vertically aggregate the microdata. For each unique combination of car brands (including `Saturn`), there is now one record with mean `Price`, the sum of `Mileage` and one car brand dummy variable set to one (all others equal zero).
 
 ```{r}
 # Aggregate data
@@ -77,54 +85,51 @@ db2 <-
   ungroup()
 ```
 
-We estimate the parameters of the same regression model as before, but now based on the vertically aggregated data instead.
+Now we estimate the parameters of the same regression model as applied earlier to the microdata, but now we apply this regression to the vertically aggregated data instead.
 
 ```{r}
-# Fit a linear regression based on aggregated data
+# Fit a linear regression based on aggregate data
 fit2 <- lm(formula = Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab, data = db2, weights = Mileage) # Exclude one dummy variable
 
 # View fit1 properties
 summary(fit2)
 ```
+
 These results are striking for three reasons:
 
-1.  the betas are identical to the betas when using the data at the individual level; that is a good thing :-)
+1.  the regression coefficients are identical to the regression coefficients when using the data at the individual level; that is a good thing :-)
 2.  the R-squared is at the maximum value of 1; that is too good to be true ;-)
 3.  most other statistics from the regression are infinite numbers or not a number (NaN); and that is a shame!
 
-The first result is what we hoped for. The second result tells us that the model fits the data perfectly. In other words, the predicted `Prices` of the six car brands are exactly equal to the actual `Prices`. This is true at the aggregate level (6 predictors predict the 6 observations perfectly), but it is certainly not the case for the model estimated above at the individual level. This situation at the same time is the reason for result 3. A perfect model fit implies that the standard error is zero for all observations. As the standard error plays a role in the calculation of most statistics, this results in lots of infinite numbers (when dividing by 0) or `NaN`s (when 0 is divided by 0). The solution to derive the right results is to do some reverse engineering. 
+The first result is what we hoped for. The second result tells us that the model fits the data perfectly. In other words, the predicted `Prices` of the six car brands are exactly equal to the actual `Prices`. This is true at the aggregate level (6 predictors predict the 6 observations perfectly), but it is certainly not the case for the model estimated above at the individual level. This situation at the same time is the reason for result 3. A perfect model fit implies that the standard error is zero for all observations. As the standard error plays a role in the calculation of most statistics, this results in lots of infinite numbers (when dividing by 0) or NaN's (when 0 is divided by 0). The solution to derive the right results is to do some reverse engineering.
 
-## Reverse engineered standard errors
+## Reverse engineer standard errors
 
-The first to reverse engineer the original standard errors is to apply the `betas` from the above regression to the matrix of the regression with individual data. This gives us the predicted `Prices` at the individual level. Subtracting these from actual `Prices` gives `sigma2`.
+To derive $\hat{\sigma}^2$, the regression coefficients are applied to the matrix $X$ which was used in the regression **with microdata**. This gives us the predicted `Prices` at the individual level. Subtracting these from actual `Prices` gives $\hat{\sigma}^2$.
 
-The second step is to calculate the inverse of t(X) times X. X is the regression matrix, so we have to drop Saturn and add a unity vector to represent the intercept. The standard errors of the `betas` are derived by multiplying this result with `sigma2` and taking the square root of the elements at the diagonal of the matrix.
+The other factor to calculate is $(X'X)^{-1}$, where $X$ is the regression matrix **based on the microdata**. So, a unity vector is included in this matrix to represent the intercept and Saturn is not included. [Note that this inversion is also needed for least-squares on microdata and consumes a lot of computer time. Avoiding this inversion with microdata is why aggregation pays off in the first place.]{.aside}
 
-With `chol2inv` `(X'X)^{-1}` is computed from the (R part) of the QR decomposition of `X`.
+The standard errors of the regression coefficients are now derived by multiplying these two factors and taking the square root of the diagonal matrix elements.
 
 ```{r}
-# Calculate sigma2
+# Calculate sigma squared
 fit2_sigma2 <- sum(db1$Mileage * (db1$Price - predict.lm(fit2, db1))^2)/(nrow(db1)*sum(db2$Mileage)-fit2$rank)
+fit2_sigma2
 # Calculate the covariance matrix
 WX <- sqrt(db1$Mileage) * model.matrix(~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab, db1)
-#fit2_covmatrix <- fit2_sigma2 * solve(t(X) %*% X)
 fit2_covmatrix <- fit2_sigma2 * chol2inv(qr(WX)$qr)
-# Calculate the standard errors for the betas
+fit2_covmatrix
+# Calculate the standard errors for the regression coefficients
 fit2_stderr <- sqrt(diag(fit2_covmatrix))
 fit2_stderr
 ```
 
-Note that to derive the covariance matrix, an inversion of the (weighted) model matrix is necessary. As matrix inversion is taking most of the computer resources with linear regression, you might strongly doubt whether doing a linear regression on aggregated data is more efficient than a linear regression on individual data. The answer is that standard errors are not that informative with very, very large data sets as the beta coefficients will all differ from zero with a p-value very close to zero. For example, I regularly work with data with records for the total Dutch population of about 17 million people. Only the estimated beta coefficients are relevant in this type of research. So to conclude: the bigger the data, the more the aggregation will pay off with (weighted) linear regression.
+Surprise, surprise: the squared residual standard error, the covariance matrix and standard errors for the regression estimates are identical to those from the regression based on the microdata. [Note how the weights play their role in these formulas.]{.aside}
 
-## Questions
+::: callout-tip
+## Tip
 
-1.  How does this procedure work?
-2.  Are the parameter estimates the same as those based on the individual level data?
-3.  What about the estimates of the standard errors?
-4.  How to deal with weighted data?
+The process of reverse engineering standard errors consumes a lot of computer resources. If your microdata are really BIG, the parameter estimates might always be statistically significantly different from zero. In those cases, calculating standard errors is unnecessary. Or, calculate them  after the exploration phase for your one and only optimal regression model.
+:::
 
-## References
-
-[How to calculate standard errors weighted least-squares on aggregated data](https://stats.stackexchange.com/questions/83223/standard-errors-in-weighted-least-squares-on-aggregated-data)
-
-[Mean and variances for aggregate data with multiple columns and weights](https://dplyr.tidyverse.org/articles/colwise.html)
+Happy coding!
