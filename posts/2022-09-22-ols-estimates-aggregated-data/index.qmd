@@ -17,13 +17,11 @@ Risk equalization is my main field of scientific research. With risk equalizatio
 
 To save computer time, before running the regression, these data are vertically aggregated by the risk classes. A risk class is defined as a unique combination of the predictors in the linear regression. The efficiency gain of this procedure is larger, the larger the number of records and dummy variables in the microdata set.
 
-I will first show the regression results, had we done the calculations based on the microdata. Second, the results are shown for the regression based kn vertically aggregated data. This will return the same `beta` estimates as those based upon the disaggregated microdata, but with zero standard deviations. Third, the code is given to derive the original standard deviations based upon the disaggregated data. As a bonus, all calculations are performed with a weighting variable which may apply in your use case. But let's start with loading an example data set.
+Here is the code to vertically aggregate data and run a regression to get estimates of beta coefficients identical to those derived with the microdata. However, standard errors do not automatically result from the regression with vertically aggregated data. The code for calculating the standard errors to overcome this problem is given. As a bonus, all calculations are illustrated with a weighting variable. 
 
 ## Data and method
 
-I use the `car_prices` data set as an example and try to predict the car prices with the care brands as predictors. Note that, as a consequence, in my examples the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables. This makes the example easy to understand, and closely resembles the characteristics of the data used for risk equalization, but the code may apply to a wider range of variables nonetheless. I use `mileage` as the weighting variable.
-
-Let us start with loading the data into memory.
+Let's start with loading the necessary packages into memory. I use `car_prices` from the `modeldata` package for the example.
 
 ```{r}
 # Load library for the recipe. parsnip, workflow and hardhat packages, along with the rest of tidymodels
@@ -31,21 +29,22 @@ library(dplyr)
 library(modeldata)
 ```
 
-Now we select only the relevant variables. Although the weights are not yet used in the first example, `mileage` is already defined as the weighting variable in the data set.
-
+We will predict car prices with care brands and select these variables from the `car_prices` microdata set. I use `mileage` as the weighting variable. 
 
 ```{r}
 # Create a data set with one non-negative continuous variable and uncorrelated dummy variables as predictors
 db1 <- select(car_prices, Price, Buick:Saturn, Mileage) %>% 
-  mutate(Mileage = Mileage/sum(Mileage))
+  mutate(Mileage = Mileage/sum(Mileage)) # This lets the weights sum up to 1
 str(db1)
 ```
 
-The above code can also be applied for unweighted linear regression, however. A simple trick is to create a unity weight variable, which in this example boils down to replacing the second line by `mutate(Mileage = 1)`.
+This code can also be applied for unweighted linear regression. To do this, simply replace the second line by `mutate(Mileage = 1)`.
 
-## Linear regression with individual data
+Note that in this example the outcome variable is non-negative and the predictors are mutually exclusive (0/1) dummy variables. This corresponds with the characteristics of the outcome variable and predictors in the use case described above.
 
-Now on with the first example. These lines of code gives us the parameter estimates for the linear regression based on the microdata. Note that `Saturn` is the reference dummy variable of my choice (i.e. in effect its coefficient is set to zero by default) and is thus excluded from the regression.
+## Linear regression with microdata
+
+Here is the code for the linear regression based on the microdata. Note that `Saturn` is the reference dummy variable of my choice and is thus excluded from the regression (i.e. its coefficient is set to zero by default).
 
 ```{r}
 # Fit a linear regression based on individual data
@@ -55,7 +54,7 @@ fit1 <- lm(formula = Price ~ 1 + Buick + Cadillac + Chevy + Pontiac + Saab, data
 summary(fit1)
 ```
 
-~~Just for fun~~ just as a check, we calculate the standard errors also by hand. This will become handy in the next section, as with estimation based on aggregated data we can not reverse engineer the standard errors in another way than by hand. We start with calculating `sigma2` by hand too, although this is readily available from the `fit1` object as `sigma(fit1)`\^2.
+~~Just for fun~~ just as a check, we calculate the standard errors also by hand. This will become handy later on, as will need this code to reverse engineer the standard errors with aggregated data. Also, we calculate `sigma` squared by hand in this code, although this is readily available from the `fit1` object as `sigma(fit1)^2`.
 
 ```{r}
 fit1_sigma2 <- sum(weighted.residuals(fit1)^2)/df.residual(fit1)
@@ -63,11 +62,11 @@ fit1_covmatrix <- fit1_sigma2 * chol2inv(qr(fit1)$qr)
 fit1_stderr <- sqrt(diag(fit1_covmatrix))
 ```
 
-The estimates are exactly equal to those in the regression output, so we are good to go to the next step.
+The estimates are exactly equal to those in the regression output, so we are good to go ahead.
 
 ## Linear regression with aggregated data
 
-Next we vertically aggregate the microdata.
+Next we vertically aggregate the microdata. For each unique combination of car brands (including `Saturn`), there is now one record with mean `Price`, the sum of `Mileage` and one car brand dummy variable set to one (all others equal zero). 
 
 ```{r}
 # Aggregate data
@@ -78,9 +77,7 @@ db2 <-
   ungroup()
 ```
 
-Now we estimate the parameters of the same regression model but based on the vertically aggregated data instead.
-
-microdata.
+We estimate the parameters of the same regression model as before, but now based on the vertically aggregated data instead.
 
 ```{r}
 # Fit a linear regression based on aggregated data
