@@ -16,6 +16,9 @@ website:
   open-graph: true
     
   navbar:
+    left: 
+      - icon: twitter
+        href: https://twitter.com/pjastam
     right:
       - text: Blog
         href: posts.qmd
@@ -23,10 +26,6 @@ website:
         href: publications.qmd
       - text: Talks
         href: "https://talks.pietstam.nl"
-      - icon: twitter
-        href: https://twitter.com/pjastam
-      - icon: github
-        href: https://github.com/pjastam
       - icon: rss
         href: posts.xml
 
