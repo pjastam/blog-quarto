@@ -4,13 +4,16 @@ library(dplyr)
 library(modeldata)
 
 # Read data
-library(here)
-data <- read.table(here("posts", "2022-09-22-ols-estimates-aggregated-data", "wic.txt"))
+data <- read.table("C:/Users/pjast/OneDrive/Dev/Quarto/blog/posts/2022-09-22-ols-estimates-aggregated-data/wic.txt", header = TRUE)
 
 # Transform data
 db1 <- data %>% 
   rename_all(tolower) %>% 
-  mutate(wtgaink = wtgain * 0.453592, mracethn = as.factor(mracethn), mracethn = relevel(mracethn, ref = 3)) %>%
+  mutate(wtgaink = wtgain * 0.453592, 
+         wic = as.factor(wic), 
+         mracethn = as.factor(mracethn), mracethn = relevel(mracethn, ref = 3), 
+         latecare = as.factor(latecare)
+         ) %>%
   select(wtgaink, wic, mracethn, latecare)
   
 # Model 1
@@ -42,6 +45,7 @@ db2
 
 # Fit regression model to aggregated data
 fit2 <- lm(formula = meany ~ wic + mracethn + latecare, data = db2, weights = N)
+summary(fit2)
 
 # Calculate sigma squared
 fit2_sigma2 <- sum(length(db1$wtgaink) * (db1$wtgaink - predict.lm(fit2, db1))^2)/(nrow(db1)*sum(db2$N)-fit2$rank)
