@@ -17,6 +17,8 @@ website:
     
   navbar:
     left: 
+      - icon: mastodon
+        href: https://mastodon.nl/@pjastam
       - icon: twitter
         href: https://twitter.com/pjastam
     right:
