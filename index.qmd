@@ -10,6 +10,9 @@ about:
   image: profile.png
   image-shape: round
   links:
+    - icon: mastodon
+      text: Mastodon
+      href: https://mastodon.nl/@pjastam
     - icon: twitter
       text: Twitter
       href: https://twitter.com/pjastam
