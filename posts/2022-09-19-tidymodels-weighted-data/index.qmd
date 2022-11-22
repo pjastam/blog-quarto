@@ -3,7 +3,7 @@ title: "Use tidymodels with weighted and unweighted data"
 description: "It took some time to figure out how to use frequency weights when fitting a model in the tidymodels framework. Here is the code to do that."
 author: "Piet Stam"
 date: "2022-09-19"
-categories: [digital transformation]
+categories: [R]
 image: "luis-reyes-mTorQ9gFfOg-unsplash.png"
 image-alt: "Photo by [Luis Reyes](https://unsplash.com/@tuga760?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/weights?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)"
 reference-location: document

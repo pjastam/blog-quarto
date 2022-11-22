@@ -3,7 +3,7 @@ title: "Modeling match results in the Dutch Eredivisie using a hierarchical Baye
 description: "This is a rather short blog post, BUT it contains the references to where you can find all the code and estimation results of my first application."
 author: "Piet Stam"
 date: "2019-05-10T18:00:00Z"
-categories: [sports analytics, digital transformation]
+categories: [sports analytics, R]
 image: "feature.png"
 image-alt: "Image credit: [**Wikimedia**](https://nl.wikipedia.org/wiki/Thomas_Bayes#/media/Bestand:Thomas_Bayes.gif)"
 reference-location: margin
