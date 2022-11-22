@@ -13,9 +13,6 @@ about:
     - icon: mastodon
       text: Mastodon
       href: https://mastodon.nl/@pjastam
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/pjastam
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/pjastam
