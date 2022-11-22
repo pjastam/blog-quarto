@@ -9,6 +9,8 @@ listing:
   feed: 
     items: 10
     title: "Piet Stam - My blog posts"
+    categories: 
+      - R
   sort: "date desc"
   type: grid
   categories: unnumbered
