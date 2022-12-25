@@ -31,6 +31,8 @@ I founded the boutique consulting firms Equalis Strategy & Modeling and SiRM - S
 
 ## Education
 
+{{< ai coursera >}} Digital Strategy | 2022 | IBM & Darden School of Business
+
 {{< fa graduation-cap >}} PhD in Health Economics | 2007 | Erasmus University Rotterdam
 
 {{< fa graduation-cap >}} MSc in Econometrics | 1993 | Erasmus University Rotterdam
