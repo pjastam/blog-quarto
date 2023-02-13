@@ -3,7 +3,7 @@ title: "Speed skating app dockerized"
 description: "The first version of the Shiny app had to be installed on a VM with a Shiny server running. Now that I created a Docker version, it is much easier to deploy the app on a VM with Docker pre-installed."
 author: "Piet Stam"
 date: "2018-06-04"
-categories: [sports analytics, R, digital transformation]
+categories: [sports analytics, digital transformation]
 image: "feature_bw.png"
 image-alt: "Image credit: [**Jesse Stam**](http://jesse-stam.nl/wp-content/gallery/training-thialf-24-okt-2017/DSC_9747.JPG)"
 reference-location: margin
