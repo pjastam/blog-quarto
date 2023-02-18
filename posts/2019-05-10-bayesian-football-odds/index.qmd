@@ -9,6 +9,7 @@ image: "feature.png"
 image-alt: "Image credit: [**Wikimedia**](https://nl.wikipedia.org/wiki/Thomas_Bayes#/media/Bestand:Thomas_Bayes.gif)"
 reference-location: margin
 format: html
+css: bootstrap.min.css
 ---
 
 ```{=html}
