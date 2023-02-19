@@ -1,0 +1,1814 @@
+<blockquote>
+<p><em>Copyright 2019 <a href="http://www.pietstam.nl">Piet Stam</a>. The code and the README.md documentation are licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/4.0/">Attribution 4.0 International license</a>.</em></p>
+</blockquote>
+<div id="table-of-contents" class="section level1">
+<h1><a name="index"></a>Table of contents</h1>
+<ol style="list-style-type: decimal">
+<li><a href="#intro">Introduction</a>
+<ul>
+<li><a href="#goal">Quick summary</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
+</ul></li>
+<li><a href="#datamethods">Data and methods</a>
+<ul>
+<li><a href="#maths">Theoretical description of the model</a></li>
+<li><a href="#kickoff">Read data</a></li>
+</ul></li>
+<li><a href="#est_sim_val">Model estimation, simulation and validation</a>
+<ul>
+<li><a href="#estimation">Model estimation</a></li>
+<li><a href="#simulation">Generating the predictions</a></li>
+<li><a href="#validation">Model validation</a></li>
+</ul></li>
+<li><a href="#results">Results</a>
+<ul>
+<li><a href="#ranking">The ranking of the teams</a></li>
+<li><a href="#prediction">Predicting the future</a></li>
+<li><a href="#matchbetting">Betting on the match outcome</a></li>
+<li><a href="#scorebetting">Betting on the correct score</a></li>
+</ul></li>
+<li><a href="#appendix">Appendix</a>
+<ul>
+<li><a href="#contact">Who do you call?</a></li>
+</ul></li>
+</ol>
+</div>
+<div id="introduction" class="section level1">
+<h1><a name="intro"></a>Introduction</h1>
+<div id="quick-summary" class="section level2">
+<h2><a name="goal"></a>Quick summary</h2>
+<p>We applied the original work of <a href="http://www.sumsar.net/about.html">Rasmus Baath</a> to the Dutch Eredivisie football competition. With <code>r-bayesian-football-odds</code> we estimated the odds of football matches in the last two weeks of the 2018/2019 Dutch Eredivisie football competiton. We provide the code and evaluate the results of our predictions.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="acknowledgements" class="section level2">
+<h2><a name="acknowledgements"></a>Acknowledgements</h2>
+<p>This piece of work is based on the works of <a href="http://www.sumsar.net/blog/2013/07/modeling-match-results-in-la-liga-part-one/">Rasmus Baath</a>. Rasmus Baath submitted his code to the <a href="https://www.r-project.org/conferences/useR-2013/">UseR 2013 data analysis contest</a> and licensed it under the Creative Commons <a href="http://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported license</a>.</p>
+<p>He predicted the results of the 50 last matches of the 2012/2013 Spanish LaLiga season. He used data of the 2008/09-2012/13 seasons (5 seasons in total) to estimate his regression model in a <a href="https://en.wikipedia.org/wiki/Bayes_estimator">Bayesian</a> way. See <a href="https://stats.stackexchange.com/questions/252577/bayes-regression-how-is-it-done-in-comparison-to-standard-regression">this thread</a> for an intuitive explanation of the difference between the bayesian approach and the conventional approaches of linear regression and maximum likelihood.</p>
+<p>I slightly adpated his code to predict the results of the last two competition rounds (that is, the last 18 matches) of the 2018/2019 Dutch Eredivisie season. These predictions are based on soccer match data of the 2014/15-2018/19 seasons (5 seasons in total). The source of these data is <a href="http://www.football-data.co.uk/netherlandsm.php">here</a>. Out of the three model specifications that Rasmus developed, I used the most sophisticated model that allowed for year-to-year variability in team skill (called “iteration 3” by Rasmus).</p>
+<p>You can find my code at <a href="https://github.com/pjastam/r-bayesian-football-odds">GitHub</a>. Rasmus deserves all the credits, I deserve all the blame in case of any errors in my application to the Dutch football competition.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+</div>
+<div id="data-and-methods" class="section level1">
+<h1><a name="datamethods"></a>Data and methods</h1>
+<div id="theoretical-description-of-the-model" class="section level2">
+<h2><a name="maths"></a>Theoretical description of the model</h2>
+<p>The first thing to notice is that not all teams are equally good. Therefore, it will be assumed that all teams have a latent skill variable and the skill of a team <em>minus</em> the skill of the opposing team defines the predicted outcome of a game. As the number of goals are assumed to be Poisson distributed it is natural that the skills of the teams are on the log scale of the mean of the distribution.</p>
+<p>In its simplest form, the distribution of the number of goals for team <span class="math inline">\(i\)</span> when facing team <span class="math inline">\(j\)</span> is then</p>
+<p><span class="math display">\[Goals_{i,j} \sim \text{Poisson}(\lambda_{i,j})\]</span></p>
+<p><span class="math display">\[\log(\lambda_{i,j}) = \text{baseline} + \text{skill}_i - \text{skill}_j\]</span></p>
+<p>where baseline is the log average number of goals when both teams are equally good. Note that this model description does not capture the variation in the number of goals among football seasons and between home vs away teams.</p>
+<p>If we do allow for the latter type of variation, then the distribution of the goal outcome of a match between home team <span class="math inline">\(i\)</span> and away team <span class="math inline">\(j\)</span> in season <span class="math inline">\(t\)</span> can be described as follows:</p>
+<p><span class="math display">\[HomeGoals_{t,i,j} \sim \text{Poison}(\lambda_{\text{home},t,i,j})\]</span> <span class="math display">\[AwayGoals_{t,i,j} \sim \text{Poison}(\lambda_{\text{away},t,i,j})\]</span> <span class="math display">\[\log(\lambda_{\text{home},t,i,j}) = \text{baseline}_{\text{home},t} + \text{skill}_{t,i} - \text{skill}_{t,j}\]</span> <span class="math display">\[\log(\lambda_{\text{away},t,i,j}) = \text{baseline}_{\text{away},t} + \text{skill}_{t,j} - \text{skill}_{t,i}\]</span></p>
+<p>Note that the <code>baseline</code> is split into <code>home_baseline</code> and <code>away_baseline</code> in order to account for the home advantage.</p>
+<p>I set the prior distributions over the baseline and the skill of all <span class="math inline">\(n\)</span> teams in season <span class="math inline">\(t\)</span> to:</p>
+<p><span class="math display">\[\text{baseline}_{\text{home},t} \sim \text{Normal}(0, 4^2)\]</span> <span class="math display">\[\text{baseline}_{\text{away},t} \sim \text{Normal}(0, 4^2)\]</span></p>
+<p>I set the prior distributions over the skill of all <span class="math inline">\(n\)</span> teams in season <span class="math inline">\(t\)</span> to:</p>
+<p><span class="math display">\[\text{skill}_{t,1 \ldots n} \sim \text{Normal}(\text{skill}_{t-1,1 \ldots n}, \sigma_{\text{seasons}}^2)\]</span> <span class="math display">\[\sigma_\text{seasons} \sim \text{Uniform}(0, 3)\]</span></p>
+<p>and the priors over the skill of all <span class="math inline">\(n\)</span> teams in their <span class="math inline">\(first\)</span> season modeled as:</p>
+<p><span class="math display">\[\text{skill}_{1,1 \ldots n} \sim \text{Normal}(\mu_\text{teams}, \sigma_{\text{teams}}^2)\]</span> <span class="math display">\[\mu_\text{teams} \sim \text{Normal}(0, 4^2)\]</span> <span class="math display">\[\sigma_\text{teams} \sim \text{Uniform}(0, 3)\]</span></p>
+<p>We choose very vague priors. For example, the prior on the baseline have a SD of 4 but since this is on the log scale of the mean number of goals it corresponds to one SD from the mean <span class="math inline">\(0\)</span> covering the range of <span class="math inline">\([0.02, 54.6]\)</span> goals. A very wide prior indeed.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="read-data" class="section level2">
+<h2><a name="kickoff"></a>Read data</h2>
+<p>We first read the Dutch soccer match data of the 2014/15-2018/19 Dutch Eredivisie seasons from the original csv-files and cache them. The result is a database called <code>eredivisie</code>.</p>
+<pre class="r"><code>from_year &lt;- 2014
+to_year &lt;- 2019
+source(paste0(&quot;functions/Import_Data_Eredivisie.R&quot;))</code></pre>
+<p>Then the cached <code>eredivisie</code> data are cleaned and new variables are created.</p>
+<pre class="r"><code>eredivisie &lt;- eredivisie %&gt;%
+  mutate(MatchResult = sign(HomeGoals - AwayGoals)) # -1 Away win, 0 Draw, 1 Home win
+
+# Creating a data frame d with only the complete match results
+d &lt;- na.omit(eredivisie)
+
+# Lists with the unique names of all teams and all seasons in the database
+teams &lt;- unique(c(d$HomeTeam, d$AwayTeam))
+seasons &lt;- unique(d$Season)
+
+# A list for JAGS with the data from d where the strings are coded as integers
+data_list &lt;- list(HomeGoals = d$HomeGoals, AwayGoals = d$AwayGoals, 
+                  HomeTeam = as.numeric(factor(d$HomeTeam, levels=teams)),
+                  AwayTeam = as.numeric(factor(d$AwayTeam, levels=teams)),
+                  Season = as.numeric(factor(d$Season, levels=seasons)),
+                  n_teams = length(teams), n_games = nrow(d), 
+                  n_seasons = length(seasons))</code></pre>
+<p>The data set <code>eredivisie</code> contains data from 5 different seasons. In this model we allow for variability in year-to-year team performance. This variablitity in team performance can be demonstrated by the following diagram, which shows that some teams do not even participate in all seasons in the <code>eredivisie</code> data set, as a result of dropping out of the first division:</p>
+<pre class="r"><code>qplot(Season, HomeTeam, data=d, ylab=&quot;Team&quot;, xlab = &quot;Season&quot;)</code></pre>
+<p><img src="results/participation_by_season.png" width="630" /></p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+</div>
+<div id="estimation-simulation-and-validation" class="section level1">
+<h1><a name="est_sim_val"></a>Estimation, simulation and validation</h1>
+<div id="model-estimation" class="section level2">
+<h2><a name="estimation"></a>Model estimation</h2>
+<p>Turning this into a JAGS model results in the following string. Note that the model loops over all seasons and all match results. JAGS parameterizes the normal distribution with precision (the reciprocal of the variance) instead of variance so the hyper priors have to be converted. Finally, we &quot;anchor&quot; the skill of one team to a constant otherwise the mean skill can drift away freely. Doing these adjustments results in the following model description:</p>
+<pre class="r"><code>m3_string &lt;- &quot;model {
+for(i in 1:n_games) {
+HomeGoals[i] ~ dpois(lambda_home[Season[i], HomeTeam[i],AwayTeam[i]])
+AwayGoals[i] ~ dpois(lambda_away[Season[i], HomeTeam[i],AwayTeam[i]])
+}
+
+for(season_i in 1:n_seasons) {
+for(home_i in 1:n_teams) {
+for(away_i in 1:n_teams) {
+lambda_home[season_i, home_i, away_i] &lt;- exp( home_baseline[season_i] + skill[season_i, home_i] - skill[season_i, away_i])
+lambda_away[season_i, home_i, away_i] &lt;- exp( away_baseline[season_i] + skill[season_i, away_i] - skill[season_i, home_i])
+}
+}
+}
+
+skill[1, 1] &lt;- 0 
+for(j in 2:n_teams) {
+skill[1, j] ~ dnorm(group_skill, group_tau)
+}
+
+group_skill ~ dnorm(0, 0.0625)
+group_tau &lt;- 1/pow(group_sigma, 2)
+group_sigma ~ dunif(0, 3)
+
+home_baseline[1] ~ dnorm(0, 0.0625)
+away_baseline[1] ~ dnorm(0, 0.0625)
+
+for(season_i in 2:n_seasons) {
+skill[season_i, 1] &lt;- 0 
+for(j in 2:n_teams) {
+skill[season_i, j] ~ dnorm(skill[season_i - 1, j], season_tau)
+}
+home_baseline[season_i] ~ dnorm(home_baseline[season_i - 1], season_tau)
+away_baseline[season_i] ~ dnorm(away_baseline[season_i - 1], season_tau)
+}
+
+season_tau &lt;- 1/pow(season_sigma, 2) 
+season_sigma ~ dunif(0, 3) 
+}&quot;</code></pre>
+<p>We then run this model directly from R using RJAGS and the <code>textConnection</code> function. This takes about half an hour on my computer, but of course this depends on the configuration at hand.</p>
+<pre class="r"><code># Compiling the model
+m3 &lt;- jags.model(textConnection(m3_string), data=data_list, n.chains=3, n.adapt=10000)
+# Burning some samples on the altar of the MCMC god
+update(m3, 10000)
+# Generating MCMC samples
+s3 &lt;- coda.samples(m3, variable.names=c(&quot;home_baseline&quot;, &quot;away_baseline&quot;,&quot;skill&quot;, &quot;season_sigma&quot;, &quot;group_sigma&quot;, &quot;group_skill&quot;), n.iter=40000, thin=8)
+# Merging the three MCMC chains into one matrix
+ms3 &lt;- as.matrix(s3)</code></pre>
+<p>The following graphs shows the trace plots and probability distributions of the team mean, team sigma and season sigma parameters, respectively.</p>
+<pre class="r"><code>plot(s3[, &quot;group_skill&quot;])</code></pre>
+<p><img src="results/mu_sigma_params-1.png" width="810" /></p>
+<pre class="r"><code>plot(s3[, &quot;group_sigma&quot;])</code></pre>
+<p><img src="results/mu_sigma_params-2.png" width="810" /></p>
+<pre class="r"><code>plot(s3[, &quot;season_sigma&quot;])</code></pre>
+<p><img src="results/mu_sigma_params-3.png" width="810" /></p>
+<p>We can also calculate the default home advantage by looking at the difference between <code>exp(home_baseline) - exp(away_baseline)</code>. The next graph shows that there is a home advantage of more than 0.4 goals, on average, and it differs significantly from zero.</p>
+<pre class="r"><code>plotPost(exp(ms3[,col_name(&quot;home_baseline&quot;,to_year-from_year)]) - exp(ms3[,col_name(&quot;away_baseline&quot;,to_year-from_year)]), compVal = 0, xlab = &quot;Home advantage in number of goals&quot;)</code></pre>
+<p><img src="results/overall_home_advantage-1.png" width="810" /></p>
+<pre><code>##                                        mean    median      mode hdiMass
+## Home advantage in number of goals 0.4288232 0.4248015 0.4162575    0.95
+##                                      hdiLow   hdiHigh compVal pcGTcompVal
+## Home advantage in number of goals 0.2880692 0.6003385       0           1
+##                                   ROPElow ROPEhigh pcInROPE
+## Home advantage in number of goals      NA       NA       NA</code></pre>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="generating-predictions-in--and-out-of-sample" class="section level2">
+<h2><a name="simulation"></a>Generating predictions (in- and out-of-sample)</h2>
+<p>In the <code>eredivisie</code> data set included in this project, the results of the 18 last games of the 2018/2019 season are missing. Using our model we can now both predict and simulate the outcomes of these 18 games. The R code below calculates a number of measures for each game (both the games with known and unknown outcomes):</p>
+<ul>
+<li>The mode of the simulated number of goals, that is, the <em>most likely</em> number of scored goals. If we were asked to bet on the number of goals in a game this is what we would use.</li>
+<li>The mean of the simulated number of goals, this is our best guess of the average number of goals in a game.</li>
+<li>The most likely match result for each game.</li>
+<li>A random sample from the distributions of credible home scores, away scores and match results. This is how the Eredivisie actually could have played out in an alternative reality.</li>
+</ul>
+<pre class="r"><code>n &lt;- nrow(ms3)
+m3_pred &lt;- sapply(1:nrow(eredivisie), function(i) {
+  home_team &lt;- which(teams == eredivisie$HomeTeam[i])
+  away_team &lt;- which(teams == eredivisie$AwayTeam[i])
+  season &lt;- which(seasons == eredivisie$Season[i])
+  home_skill &lt;- ms3[, col_name(&quot;skill&quot;, season, home_team)] 
+  away_skill &lt;- ms3[, col_name(&quot;skill&quot;, season, away_team)]
+  home_baseline &lt;- ms3[, col_name(&quot;home_baseline&quot;, season)]
+  away_baseline &lt;- ms3[, col_name(&quot;away_baseline&quot;, season)]
+  
+  home_goals &lt;- rpois(n, exp(home_baseline + home_skill - away_skill))
+  away_goals &lt;- rpois(n, exp(away_baseline + away_skill - home_skill))
+  home_goals_table &lt;- table(home_goals)
+  away_goals_table &lt;- table(away_goals)
+  match_results &lt;- sign(home_goals - away_goals)
+  match_results_table &lt;- table(match_results)
+  
+  mode_home_goal &lt;- as.numeric(names(home_goals_table)[ which.max(home_goals_table)])
+  mode_away_goal &lt;- as.numeric(names(away_goals_table)[ which.max(away_goals_table)])
+  match_result &lt;-  as.numeric(names(match_results_table)[which.max(match_results_table)])
+  rand_i &lt;- sample(seq_along(home_goals), 1)
+  
+  c(mode_home_goal = mode_home_goal, mode_away_goal = mode_away_goal, match_result = match_result,
+    mean_home_goal = mean(home_goals), mean_away_goal = mean(away_goals),
+    rand_home_goal = home_goals[rand_i], rand_away_goal = away_goals[rand_i],
+    rand_match_result = match_results[rand_i])
+})
+m3_pred &lt;- t(m3_pred)</code></pre>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="model-validation" class="section level2">
+<h2><a name="validation"></a>Model validation</h2>
+<p>First let's compare the distribution of the actual number of goals in the data with the predicted mode, mean and randomized number of goals for all the games (focusing on the number of goals for the home team).</p>
+<p>First the actual distribution of the number of goals for the home teams.</p>
+<pre class="r"><code>hist(eredivisie$HomeGoals, breaks= (-1:max(eredivisie$HomeGoals, na.rm=TRUE)) + 0.5, xlim=c(-0.5, 10), main = &quot;Distribution of the number of goals\nscored by a home team in a match&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/hist_home_goal-1.png" width="360" /></p>
+<p>This next plot shows the distribution of the modes from the predicted distribution of home goals from each game. That is, what is the most probable outcome, for the home team, in each game.</p>
+<pre class="r"><code>hist(m3_pred[ , &quot;mode_home_goal&quot;], breaks= (-1:max(m3_pred[ , &quot;mode_home_goal&quot;])) + 0.5, xlim=c(-0.5, 10),
+    main = &quot;Distribution of predicted most \nprobable score by a home team in\na match&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/mode_home_goal-1.png" width="360" /></p>
+<p>For almost all games the single most likely number of goals is one. Actually, if you know nothing about an Eredivisie game, betting on one goal for the home team is 78 % of the times the best bet.</p>
+<p>Let's instead look at the distribution of the predicted mean number of home goals in each game.</p>
+<pre class="r"><code>hist(m3_pred[ , &quot;mean_home_goal&quot;], breaks= (-1:max(m3_pred[ , &quot;mean_home_goal&quot;])) + 0.5, xlim=c(-0.5, 10),
+    main = &quot;Distribution of predicted mean \n score by a home team in a match&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/mean_home_goal-1.png" width="360" /></p>
+<p>For most games the expected number of goals are 2. That is, even if your safest bet is one goal you would expect to see around two goals.</p>
+<p>The distribution of the mode and the mean number of goals doesn’t look remotely like the actual number of goals. This was not to be expected, we would however expect the distribution of randomized goals (where for each match the number of goals has been randomly drawn from that match’s predicted home goal distribution) to look similar to the actual number of home goals. Looking at the histogram below, this seems to be the case.</p>
+<pre class="r"><code>hist(m3_pred[ , &quot;rand_home_goal&quot;], breaks= (-1:max(m3_pred[ , &quot;rand_home_goal&quot;])) + 0.5, xlim=c(-0.5, 10),
+    main = &quot;Distribution of randomly drawn \n score by a home team in a match&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/rand_home_goal-1.png" width="360" /></p>
+<p>We can also look at how well the model predicts the data. This should probably be done using cross validation, but as the number of effective parameters are much smaller than the number of data points a direct comparison should at least give an estimated prediction accuracy in the right ballpark.</p>
+<pre class="r"><code>mean(eredivisie$HomeGoals == m3_pred[ , &quot;mode_home_goal&quot;], na.rm=T)</code></pre>
+<pre><code>## [1] 0.3150232</code></pre>
+<pre class="r"><code>mean((eredivisie$HomeGoals - m3_pred[ , &quot;mean_home_goal&quot;])^2, na.rm=T)</code></pre>
+<pre><code>## [1] 1.509597</code></pre>
+<p>So on average the model predicts the correct number of home goals 31% of the time and guesses the average number of goals with a mean squared error of 1.51. Now we’ll look at the actual and predicted match outcomes. The graph below shows the match outcomes in the data with 1 being a home win, 0 being a draw and -1 being a win for the away team.</p>
+<pre class="r"><code>hist(eredivisie$MatchResult, breaks= (-2:1) + 0.5, xlim=c(-1.5, 1.5), ylim=c(0, 1000), main = &quot;Actual match results&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/hist_actual_match_result-1.png" width="360" /></p>
+<p>Now looking at the most probable outcomes of the matches according to the model.</p>
+<pre class="r"><code>hist(m3_pred[ , &quot;match_result&quot;], breaks= (-2:1) + 0.5, xlim=c(-1.5, 1.5), ylim=c(0, 1000), main = &quot;Predicted match results&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/hist_pred_match_result-1.png" width="360" /></p>
+<p>For almost all matches the safest bet is to bet on the home team. While draws are not uncommon it is <em>never</em> the safest bet.</p>
+<p>As in the case with the number of home goals, the randomized match outcomes have a distribution similar to the actual match outcomes:</p>
+<pre class="r"><code>hist(m3_pred[ , &quot;rand_match_result&quot;], breaks= (-2:1) + 0.5, xlim=c(-1.5, 1.5), ylim=c(0, 1000), main = &quot;Randomized match results&quot;,
+    xlab = &quot;&quot;)</code></pre>
+<p><img src="results/hist_rand_match_result-1.png" width="360" /></p>
+<pre class="r"><code>mean(eredivisie$MatchResult == m3_pred[ , &quot;match_result&quot;], na.rm=T)</code></pre>
+<pre><code>## [1] 0.563865</code></pre>
+<p>The model predicts the correct match outcome (i.e. home team wins / a draw / away team wins) 57% of the time. Pretty good!</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+</div>
+<div id="results" class="section level1">
+<h1><a name="results"></a>Results</h1>
+<div id="the-ranking-of-the-teams" class="section level2">
+<h2><a name="ranking"></a>The ranking of the teams</h2>
+<p>We’ll start by ranking the teams of the <code>Eredivisie</code> using the estimated skill parameters from the 2018/2019 season, which are based on the estimation sample of the five seasons 2014/2015-2018/2019. Note that for one of the teams the skill parameter is “anchored at zero”. This “anchoring” is done for the very same &quot;identification&quot; reason that one of the parameters in a traditional logit analysis is always set to zero by default: the value of a parameter automatically follows if you already know all the other parameters in your model and given the fact that probabilities always sum up to 1 in total.</p>
+<p>Consequently, as Rasmus noted before, the skill parameters are difficult to interpret as they are relative to the skill of the team that had its skill parameter “anchored” at zero. To put them on a more interpretable scale the skill paramters are first zero centered by subtracting the mean skill of all teams. Then he added the home baseline and exponentiated the resulting values. These rescaled skill parameters are now on the scale of expected number of goals when playing as a home team.</p>
+<pre class="r"><code>team_skill &lt;- ms3[, str_detect(string=colnames(ms3), paste0(&quot;skill\\[&quot;,to_year-from_year,&quot;,&quot;))]
+team_skill &lt;- (team_skill - rowMeans(team_skill)) + ms3[, paste0(&quot;home_baseline[&quot;,to_year-from_year,&quot;]&quot;)]
+team_skill &lt;- exp(team_skill)
+colnames(team_skill) &lt;- teams
+team_skill &lt;- team_skill[,order(colMeans(team_skill), decreasing=T)]
+old_par &lt;- par(mar=c(2,0.7,0.7,0.7), xaxs='i')
+caterplot(team_skill, labels.loc=&quot;above&quot;, val.lim=c(0.7, 3.8))</code></pre>
+<p><img src="results/team_skill-1.png" width="810" /></p>
+<pre class="r"><code>par(old_par)</code></pre>
+<p>Two teams are clearly ahead of the rest, Ajax and PSV. Let's look at the credible difference between these two teams. Ajax is a better team than PSV with a probabilty of 74%, i.e. the odds in favor of Ajax are 74% / 26% = 3. So, on average, PSV only wins one out of four games that they play against Ajax.</p>
+<pre class="r"><code>plotPost(team_skill[, &quot;Ajax&quot;] - team_skill[, &quot;PSV Eindhoven&quot;], compVal = 0, xlab = &quot;&lt;- PSV     vs     Ajax -&gt;&quot;)</code></pre>
+<p><img src="results/team_skill_PSV_Ajax-1.png" width="630" /></p>
+<pre><code>##                                mean    median      mode hdiMass     hdiLow
+## &lt;- PSV     vs     Ajax -&gt; 0.1616095 0.1535391 0.1467396    0.95 -0.3586123
+##                             hdiHigh compVal pcGTcompVal ROPElow ROPEhigh
+## &lt;- PSV     vs     Ajax -&gt; 0.6842824       0      0.7312      NA       NA
+##                           pcInROPE
+## &lt;- PSV     vs     Ajax -&gt;       NA</code></pre>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="predicting-the-future" class="section level2">
+<h2><a name="prediction"></a>Predicting the future</h2>
+<p>Now that we’ve checked that the model reasonably predicts the Eredivisie history let's predict the Eredivisie endgame!</p>
+<p>At the time when I executed my version of this model applied to the Dutch Eredivisie competition (2019-05-10), most of the matches in the 2018/2019 season had already been played. Yet two out of 34 competition rounds had to be played (that is, competition rounds 33 and 34). With these two rounds still to go, Ajax and PSV both have 80 points, but Ajax leads the competition as their goal difference is larger (111-30 = 81) than that of PSV (95-24 = 71). The code below displays the predicted mean and mode number of goals for the endgame and the predicted winner of each game.</p>
+<pre class="r"><code>eredivisie_forecast &lt;- eredivisie[is.na(eredivisie$HomeGoals), c(&quot;Season&quot;, &quot;Week&quot;, &quot;HomeTeam&quot;, &quot;AwayTeam&quot;)]
+m3_forecast &lt;- m3_pred[is.na(eredivisie$HomeGoals),] 
+eredivisie_forecast$mean_home_goals &lt;- round(m3_forecast[,&quot;mean_home_goal&quot;], 1) 
+eredivisie_forecast$mean_away_goals &lt;- round(m3_forecast[,&quot;mean_away_goal&quot;], 1)
+eredivisie_forecast$mode_home_goals &lt;- m3_forecast[,&quot;mode_home_goal&quot;] 
+eredivisie_forecast$mode_away_goals &lt;- m3_forecast[,&quot;mode_away_goal&quot;]
+eredivisie_forecast$predicted_winner &lt;- ifelse(m3_forecast[ , &quot;match_result&quot;] == 1, eredivisie_forecast$HomeTeam, 
+                                           ifelse(m3_forecast[ , &quot;match_result&quot;] == -1, eredivisie_forecast$AwayTeam, &quot;Draw&quot;))
+
+rownames(eredivisie_forecast) &lt;- NULL
+print(xtable(eredivisie_forecast, align=&quot;cccccccccc&quot;), type=&quot;html&quot;)</code></pre>
+<!-- html table generated in R 3.5.2 by xtable 1.8-4 package -->
+<!-- Sun Jul 14 14:38:23 2019 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Season
+</th>
+<th>
+Week
+</th>
+<th>
+HomeTeam
+</th>
+<th>
+AwayTeam
+</th>
+<th>
+mean_home_goals
+</th>
+<th>
+mean_away_goals
+</th>
+<th>
+mode_home_goals
+</th>
+<th>
+mode_away_goals
+</th>
+<th>
+predicted_winner
+</th>
+</tr>
+<tr>
+<td align="center">
+1
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Ajax
+</td>
+<td align="center">
+Utrecht
+</td>
+<td align="center">
+2.90
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+Ajax
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+AZ Alkmaar
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+<td align="center">
+1.30
+</td>
+<td align="center">
+1.90
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+</tr>
+<tr>
+<td align="center">
+3
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Groningen
+</td>
+<td align="center">
+For Sittard
+</td>
+<td align="center">
+2.10
+</td>
+<td align="center">
+1.10
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Groningen
+</td>
+</tr>
+<tr>
+<td align="center">
+4
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Feyenoord
+</td>
+<td align="center">
+Den Haag
+</td>
+<td align="center">
+2.70
+</td>
+<td align="center">
+0.90
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+Feyenoord
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Heerenveen
+</td>
+<td align="center">
+NAC Breda
+</td>
+<td align="center">
+2.20
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+Heerenveen
+</td>
+</tr>
+<tr>
+<td align="center">
+6
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Vitesse
+</td>
+<td align="center">
+Graafschap
+</td>
+<td align="center">
+2.60
+</td>
+<td align="center">
+0.90
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+Vitesse
+</td>
+</tr>
+<tr>
+<td align="center">
+7
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Willem II
+</td>
+<td align="center">
+FC Emmen
+</td>
+<td align="center">
+2.10
+</td>
+<td align="center">
+1.10
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Willem II
+</td>
+</tr>
+<tr>
+<td align="center">
+8
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Zwolle
+</td>
+<td align="center">
+VVV Venlo
+</td>
+<td align="center">
+1.90
+</td>
+<td align="center">
+1.20
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Zwolle
+</td>
+</tr>
+<tr>
+<td align="center">
+9
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Heracles
+</td>
+<td align="center">
+Excelsior
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.10
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Heracles
+</td>
+</tr>
+<tr>
+<td align="center">
+10
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Den Haag
+</td>
+<td align="center">
+Willem II
+</td>
+<td align="center">
+1.70
+</td>
+<td align="center">
+1.30
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Den Haag
+</td>
+</tr>
+<tr>
+<td align="center">
+11
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Graafschap
+</td>
+<td align="center">
+Ajax
+</td>
+<td align="center">
+0.80
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Ajax
+</td>
+</tr>
+<tr>
+<td align="center">
+12
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Utrecht
+</td>
+<td align="center">
+Heerenveen
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.20
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Utrecht
+</td>
+</tr>
+<tr>
+<td align="center">
+13
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+NAC Breda
+</td>
+<td align="center">
+Zwolle
+</td>
+<td align="center">
+1.40
+</td>
+<td align="center">
+1.70
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Zwolle
+</td>
+</tr>
+<tr>
+<td align="center">
+14
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+<td align="center">
+Heracles
+</td>
+<td align="center">
+3.10
+</td>
+<td align="center">
+0.70
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+</tr>
+<tr>
+<td align="center">
+15
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+FC Emmen
+</td>
+<td align="center">
+Groningen
+</td>
+<td align="center">
+1.30
+</td>
+<td align="center">
+1.70
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Groningen
+</td>
+</tr>
+<tr>
+<td align="center">
+16
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Excelsior
+</td>
+<td align="center">
+AZ Alkmaar
+</td>
+<td align="center">
+1.20
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+AZ Alkmaar
+</td>
+</tr>
+<tr>
+<td align="center">
+17
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+For Sittard
+</td>
+<td align="center">
+Feyenoord
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+2.30
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Feyenoord
+</td>
+</tr>
+<tr>
+<td align="center">
+18
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+VVV Venlo
+</td>
+<td align="center">
+Vitesse
+</td>
+<td align="center">
+1.30
+</td>
+<td align="center">
+1.70
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Vitesse
+</td>
+</tr>
+</table>
+<p>These predictions are perfectly useful if you want to bet on the likely winner of each game. However, they do not reflect how the actual endgame will play out, e.g., there is not a single draw in the <code>predicted_winner</code> column. So at last let's look at a <em>possible</em> version of the Eredivisie endgame by displaying the simulated match results calculated earlier.</p>
+<pre class="r"><code>eredivisie_sim &lt;- eredivisie[is.na(eredivisie$HomeGoals), c(&quot;Season&quot;, &quot;Week&quot;, &quot;HomeTeam&quot;, &quot;AwayTeam&quot;)]
+eredivisie_sim$home_goals &lt;- m3_forecast[,&quot;rand_home_goal&quot;] 
+eredivisie_sim$away_goals &lt;- m3_forecast[,&quot;rand_away_goal&quot;]
+eredivisie_sim$winner &lt;- ifelse(m3_forecast[ , &quot;rand_match_result&quot;] == 1, eredivisie_forecast$HomeTeam, 
+                            ifelse(m3_forecast[ , &quot;rand_match_result&quot;] == -1, eredivisie_forecast$AwayTeam, &quot;Draw&quot;))
+
+rownames(eredivisie_sim) &lt;- NULL
+print(xtable(eredivisie_sim, align=&quot;cccccccc&quot;), type=&quot;html&quot;)</code></pre>
+<!-- html table generated in R 3.5.2 by xtable 1.8-4 package -->
+<!-- Sun Jul 14 14:38:23 2019 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Season
+</th>
+<th>
+Week
+</th>
+<th>
+HomeTeam
+</th>
+<th>
+AwayTeam
+</th>
+<th>
+home_goals
+</th>
+<th>
+away_goals
+</th>
+<th>
+winner
+</th>
+</tr>
+<tr>
+<td align="center">
+1
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Ajax
+</td>
+<td align="center">
+Utrecht
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Draw
+</td>
+</tr>
+<tr>
+<td align="center">
+2
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+AZ Alkmaar
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+</tr>
+<tr>
+<td align="center">
+3
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Groningen
+</td>
+<td align="center">
+For Sittard
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Groningen
+</td>
+</tr>
+<tr>
+<td align="center">
+4
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Feyenoord
+</td>
+<td align="center">
+Den Haag
+</td>
+<td align="center">
+4.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Feyenoord
+</td>
+</tr>
+<tr>
+<td align="center">
+5
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Heerenveen
+</td>
+<td align="center">
+NAC Breda
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Heerenveen
+</td>
+</tr>
+<tr>
+<td align="center">
+6
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Vitesse
+</td>
+<td align="center">
+Graafschap
+</td>
+<td align="center">
+4.00
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+Vitesse
+</td>
+</tr>
+<tr>
+<td align="center">
+7
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Willem II
+</td>
+<td align="center">
+FC Emmen
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Draw
+</td>
+</tr>
+<tr>
+<td align="center">
+8
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Zwolle
+</td>
+<td align="center">
+VVV Venlo
+</td>
+<td align="center">
+4.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Zwolle
+</td>
+</tr>
+<tr>
+<td align="center">
+9
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Heracles
+</td>
+<td align="center">
+Excelsior
+</td>
+<td align="center">
+4.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+Heracles
+</td>
+</tr>
+<tr>
+<td align="center">
+10
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Den Haag
+</td>
+<td align="center">
+Willem II
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Draw
+</td>
+</tr>
+<tr>
+<td align="center">
+11
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Graafschap
+</td>
+<td align="center">
+Ajax
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Ajax
+</td>
+</tr>
+<tr>
+<td align="center">
+12
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Utrecht
+</td>
+<td align="center">
+Heerenveen
+</td>
+<td align="center">
+5.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+Utrecht
+</td>
+</tr>
+<tr>
+<td align="center">
+13
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+NAC Breda
+</td>
+<td align="center">
+Zwolle
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+1.00
+</td>
+<td align="center">
+NAC Breda
+</td>
+</tr>
+<tr>
+<td align="center">
+14
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+PSV Eindhoven
+</td>
+<td align="center">
+Heracles
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Draw
+</td>
+</tr>
+<tr>
+<td align="center">
+15
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+FC Emmen
+</td>
+<td align="center">
+Groningen
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+2.00
+</td>
+<td align="center">
+Groningen
+</td>
+</tr>
+<tr>
+<td align="center">
+16
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+Excelsior
+</td>
+<td align="center">
+AZ Alkmaar
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+AZ Alkmaar
+</td>
+</tr>
+<tr>
+<td align="center">
+17
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+For Sittard
+</td>
+<td align="center">
+Feyenoord
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+Feyenoord
+</td>
+</tr>
+<tr>
+<td align="center">
+18
+</td>
+<td align="center">
+2018/2019
+</td>
+<td align="center">
+40
+</td>
+<td align="center">
+VVV Venlo
+</td>
+<td align="center">
+Vitesse
+</td>
+<td align="center">
+3.00
+</td>
+<td align="center">
+0.00
+</td>
+<td align="center">
+VVV Venlo
+</td>
+</tr>
+</table>
+<p>Now we see a number of games resulting in a draw. We also see that Ajax and FC Utrecht tie in round 33, which puts PSV on top of the leaderboard! However, in round 34 the image is reversed when PSV and Heracles tie, against all odds. So, in the end, Ajax wins the competition in this <em>possible</em> version of the Eredivisie endgame by their better goal difference.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="betting-on-the-match-outcome" class="section level2">
+<h2><a name="matchbetting"></a>Betting on the match outcome</h2>
+<p>One of the powers with using Bayesian modeling and MCMC sampling is that once you have the MCMC samples of the parameters it is straight forward to calculate any quantity resulting from these estimates while still retaining the uncertainty of the parameter estimates. So let's look at the predicted distribution of the number of goals for AZ Alkmaar vs PSV Eindhoven game and see if I can use my model to make some money. I’ll start by using the MCMC samples to calculate the distribution of the number of goals for AZ Alkmaar and PSV Eindhoven.</p>
+<pre class="r"><code>plot_goals &lt;- function(home_goals, away_goals) { 
+  old_par &lt;- par(mar = c(0, 0, 0, 0))
+  par(mfrow = c(2, 2), mar=rep(2.2, 4))
+  
+    n_matches &lt;- length(home_goals) 
+    goal_diff &lt;- home_goals - away_goals 
+    match_result &lt;- ifelse(goal_diff &lt; 0, &quot;away_win&quot;, ifelse(goal_diff &gt; 0, &quot;home_win&quot;, &quot;equal&quot;)) 
+    hist(home_goals, xlim = c(-0.5, 10), breaks = (0:100) - 0.5)
+    hist(away_goals, xlim = c(-0.5, 10), breaks = (0:100) - 0.5) 
+    hist(goal_diff, xlim = c(-6, 6), breaks = (-100:100) - 0.5)
+    barplot(table(match_result)/n_matches, ylim = c(0, 1))
+    par(old_par)
+}</code></pre>
+<pre class="r"><code>n &lt;- nrow(ms3)
+home_team &lt;- which(teams == &quot;AZ Alkmaar&quot;)
+away_team &lt;- which(teams == &quot;PSV Eindhoven&quot;)
+season &lt;- which(seasons == paste0(to_year-1,&quot;/&quot;,to_year))
+home_skill &lt;- ms3[, col_name(&quot;skill&quot;, season, home_team)] 
+away_skill &lt;- ms3[, col_name(&quot;skill&quot;, season, away_team)]
+home_baseline &lt;- ms3[, col_name(&quot;home_baseline&quot;, season)]
+away_baseline &lt;- ms3[, col_name(&quot;away_baseline&quot;, season)]
+
+home_goals &lt;- rpois(n, exp(home_baseline + home_skill - away_skill))
+away_goals &lt;- rpois(n, exp(away_baseline + away_skill - home_skill))</code></pre>
+<p>Looking at summary of these two distributions in the first two graphs below, it shows that AZ and PSV both have the biggest chance to score one goal (as the modus of both distributions equals 1). From the third graph it follows that the most likely goal difference is 0 or -1: either AZ and PSV draw (0), or PSV scores just one more goal than AZ (-1). In case of the latter, PSV turns out to be the match winner.</p>
+<p>The fourth graph shows the probability distribution of a PSV win (‘away_win’), a draw (‘equal’) and AZ win (‘home_win’). This graph underlines that a PSV win is a likely scenario: it has a probability of more than 50%. The fact that the balance topples in favor of PSV should then be due to the one goal difference that is attributed a great chance according to the third graph. Note, however, that the probability that PSV will <em>not</em> turn out as the match winner (i.e. a draw or a loss) is still almost 50%.</p>
+<pre class="r"><code>old_par &lt;- par(mfrow = c(2, 2), mar=rep(2.2, 4))
+plot_goals(home_goals, away_goals)</code></pre>
+<p><img src="results/plot_goals-1.png" width="810" /></p>
+<pre class="r"><code>par(old_par)</code></pre>
+<p>At May 10th, that is just before the start of competition round 33, you got the following payouts (that is, how much would I get back if my bet was successful) for betting on the outcome of this game, after 288 bets being placed on the betting site <a href="http://www.williamhill.com/">William Hill</a></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">AZ</th>
+<th align="center">Draw</th>
+<th align="right">PSV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">3.90</td>
+<td align="center">4.00</td>
+<td align="right">1.78</td>
+</tr>
+</tbody>
+</table>
+<p>Using my simulated distribution of the number of goals I can calculate the predicted payouts of the model. It appears that the payouts of the model are very close to the payouts that William Hill offers.</p>
+<pre class="r"><code>1 / c(AZ =  mean(home_goals &gt; away_goals), Draw = mean(home_goals == away_goals), PSV = mean(home_goals &lt; away_goals))</code></pre>
+<pre><code>##       AZ     Draw      PSV 
+## 3.928759 4.332756 1.943005</code></pre>
+<p>The most likely result is 1 - 1 with a predicted payout of 9.70, which can be compared to the William Hill payout of 7.50 for this bet. Thus, William Hill thinks that a 1 - 1 draw is even likier than our model predicts. If we want to earn some extra money, we should bet on a 1 - 0 win for AZ, as the William Hill payout is 19 and our model predicts 17.50.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+<div id="betting-on-the-correct-score" class="section level2">
+<h2><a name="scorebetting"></a>Betting on the correct score</h2>
+<p>It is also possible to bet on the final goal outcome so let's calculate what payouts my model predicts for different goal outcomes. The payouts that William Hill reports are</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">PSV 0</th>
+<th align="center">PSV 1</th>
+<th align="center">PSV 2</th>
+<th align="center">PSV 3</th>
+<th align="center">PSV 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AZ 0</td>
+<td align="center">21</td>
+<td align="center">12</td>
+<td align="center">12</td>
+<td align="center">17</td>
+<td align="center">29</td>
+</tr>
+<tr class="even">
+<td>AZ 1</td>
+<td align="center">19</td>
+<td align="center">7.5</td>
+<td align="center">12</td>
+<td align="center">12</td>
+<td align="center">21</td>
+</tr>
+<tr class="odd">
+<td>AZ 2</td>
+<td align="center">23</td>
+<td align="center">13</td>
+<td align="center">11</td>
+<td align="center">17</td>
+<td align="center">29</td>
+</tr>
+<tr class="even">
+<td>AZ 3</td>
+<td align="center">41</td>
+<td align="center">26</td>
+<td align="center">23</td>
+<td align="center">29</td>
+<td align="center">51</td>
+</tr>
+<tr class="odd">
+<td>AZ 4</td>
+<td align="center">81</td>
+<td align="center">51</td>
+<td align="center">66</td>
+<td align="center">126</td>
+<td align="center">81</td>
+</tr>
+</tbody>
+</table>
+<p>It follows that the 1 - 1 draw is also the most likely result at Wiliam Hill. Now, we are going to calculate the payouts that our model predicts.</p>
+<pre class="r"><code>goals_payout &lt;- laply(0:6, function(home_goal) {
+  laply(0:6, function(away_goal) {
+    1 / mean(home_goals == home_goal &amp; away_goals  == away_goal)
+  })
+})
+
+colnames(goals_payout) &lt;- paste(&quot;PSV Eindhoven&quot;, 0:6, sep=&quot; - &quot;)
+rownames(goals_payout) &lt;- paste(&quot;AZ Alkmaar&quot;, 0:6, sep=&quot; - &quot;)
+goals_payout &lt;- round(goals_payout, 1)
+print(xtable(goals_payout, align=&quot;cccccccc&quot;), type=&quot;html&quot;)</code></pre>
+<!-- html table generated in R 3.5.2 by xtable 1.8-4 package -->
+<!-- Sun Jul 14 14:38:23 2019 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+PSV Eindhoven - 0
+</th>
+<th>
+PSV Eindhoven - 1
+</th>
+<th>
+PSV Eindhoven - 2
+</th>
+<th>
+PSV Eindhoven - 3
+</th>
+<th>
+PSV Eindhoven - 4
+</th>
+<th>
+PSV Eindhoven - 5
+</th>
+<th>
+PSV Eindhoven - 6
+</th>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 0
+</td>
+<td align="center">
+20.70
+</td>
+<td align="center">
+12.20
+</td>
+<td align="center">
+13.00
+</td>
+<td align="center">
+21.20
+</td>
+<td align="center">
+45.20
+</td>
+<td align="center">
+120.00
+</td>
+<td align="center">
+306.10
+</td>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 1
+</td>
+<td align="center">
+18.30
+</td>
+<td align="center">
+9.50
+</td>
+<td align="center">
+10.40
+</td>
+<td align="center">
+16.90
+</td>
+<td align="center">
+36.30
+</td>
+<td align="center">
+94.30
+</td>
+<td align="center">
+238.10
+</td>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 2
+</td>
+<td align="center">
+29.60
+</td>
+<td align="center">
+15.90
+</td>
+<td align="center">
+16.30
+</td>
+<td align="center">
+27.10
+</td>
+<td align="center">
+54.50
+</td>
+<td align="center">
+168.50
+</td>
+<td align="center">
+625.00
+</td>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 3
+</td>
+<td align="center">
+67.00
+</td>
+<td align="center">
+36.10
+</td>
+<td align="center">
+38.80
+</td>
+<td align="center">
+70.80
+</td>
+<td align="center">
+153.10
+</td>
+<td align="center">
+441.20
+</td>
+<td align="center">
+1363.60
+</td>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 4
+</td>
+<td align="center">
+208.30
+</td>
+<td align="center">
+112.80
+</td>
+<td align="center">
+135.10
+</td>
+<td align="center">
+214.30
+</td>
+<td align="center">
+454.50
+</td>
+<td align="center">
+1363.60
+</td>
+<td align="center">
+3750.00
+</td>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 5
+</td>
+<td align="center">
+937.50
+</td>
+<td align="center">
+428.60
+</td>
+<td align="center">
+625.00
+</td>
+<td align="center">
+714.30
+</td>
+<td align="center">
+1875.00
+</td>
+<td align="center">
+7500.00
+</td>
+<td align="center">
+15000.00
+</td>
+</tr>
+<tr>
+<td align="center">
+AZ Alkmaar - 6
+</td>
+<td align="center">
+3750.00
+</td>
+<td align="center">
+2142.90
+</td>
+<td align="center">
+7500.00
+</td>
+<td align="center">
+3000.00
+</td>
+<td align="center">
+7500.00
+</td>
+<td align="center">
+Inf
+</td>
+<td align="center">
+Inf
+</td>
+</tr>
+</table>
+<p>The most likely result is 1 - 1 with a predicted payout of 9.70, which can be compared to the William Hill payout of 7.50 for this bet. This, we can earn some extra money if we bet on this end score.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+</div>
+<div id="appendix" class="section level1">
+<h1><a name="appendix"></a>Appendix</h1>
+<div id="who-do-you-call" class="section level2">
+<h2><a name="contact"></a>Who do you call?</h2>
+<p>You can contact me at my GitHub email address if you would like to share your thoughts.</p>
+<p><a href="#index">Return to table of contents</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
