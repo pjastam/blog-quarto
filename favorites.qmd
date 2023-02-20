@@ -36,4 +36,4 @@ I am very much indebted to the open source community, among them the contributor
 
 ## Favorite reads
 
-[R-bloggers](http://r-bloggers.com/)
+- [R-bloggers](http://r-bloggers.com/)
