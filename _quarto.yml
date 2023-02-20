@@ -33,7 +33,7 @@ website:
 
   page-footer:
     left: |
-      Copyright (c) 2022 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a <br>
+      Copyright (c) 2001-2023 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a <br>
       {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/)
     right: |
       Written in [{{< fa brands r-project >}}](https://www.r-project.org/) and rendered with [Quarto](https://quarto.org/) <br>
