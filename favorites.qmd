@@ -1,0 +1,39 @@
+---
+title: "My favorites"
+
+description-meta: "Entrepreneur, consultant & scientist. My passion is finding the right answers with observational data, computer code and human intelligence."
+image: "profile.png"
+---
+
+## Favorite tools
+
+I am very much indebted to the open source community, among them the contributors to [Sourceforge.net](https://sourceforge.net/) to name a few. The software provided by these communities opened up a world of open source tools to me that was very useful for creating my own lines of code, the results of which can be found at [my GitHub site](https://github.com/pjastam/). Below I give my respect to the authors of these open source tools by listing the references to their creative work. You may wanna start using some of these tools too...
+
+- [7-Zip](http://sourceforge.net/projects/sevenzip/)
+- [Audacity](http://sourceforge.net/projects/audacity/)
+- [CamStudio](http://sourceforge.net/projects/camstudio/)
+- [Eraser](http://sourceforge.net/projects/eraser/)
+- [FileZilla](http://sourceforge.net/projects/filezilla/)
+- [Firefox](http://support.mozilla.org/en-US/products/firefox/)
+- [Folder Size](http://sourceforge.net/projects/foldersize/)
+- [FreeCommander](http://sourceforge.net/projects/freecommander/)
+- [FreeMind](http://sourceforge.net/projects/freemind/)
+- [GIMP](http://www.gimp.org/)
+- [GnuWin32](http://sourceforge.net/projects/getgnuwin32/)
+- [KeePass](http://sourceforge.net/projects/keepass/)
+- [Notepad++](http://notepad-plus-plus.org/)
+- [OpenOffice](http://sourceforge.net/projects/openofficeorg.mirror/)
+- [PDF Split and Merge](http://sourceforge.net/projects/pdfsam/)
+- [PDFCreator](http://www.pdfforge.org/pdfcreator/)
+- [PuTTY](http://www.putty.org/)
+- [R](http://www.r-project.org/)
+- [RStudio](http://www.rstudio.com/)
+- [TortoiseSVN](http://sourceforge.net/projects/tortoisesvn/)
+- [TrueCrypt](http://sourceforge.net/projects/truecrypt/)
+- [Vertical Timeline](http://codyhouse.co/gem/vertical-timeline/)
+- [WinMerge](http://sourceforge.net/projects/winmerge/)
+- [Zotero](http://www.zotero.org/pjastam)
+
+## Favorite reads
+
+[R-bloggers](http://r-bloggers.com/)
