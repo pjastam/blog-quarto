@@ -7,7 +7,9 @@ project:
 website:
   title: "Piet Stam"
   favicon: "favicon.png"
-  site-url: "https://www.pietstam.nl"
+  site-url: https://www.pietstam.nl
+  repo-url: https://github.com/pjastam/blog-quarto
+  repo-actions: [edit, issue]
 
   twitter-card:
     card-style: summary

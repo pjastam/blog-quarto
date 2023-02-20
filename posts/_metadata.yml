@@ -11,7 +11,7 @@ title-block-banner: true
 comments:
   hypothesis: true
   
-# Add table of contents to the right sidebar
+# Add table of contents to the right margin sidebar
 format:
   html:
     toc: true
