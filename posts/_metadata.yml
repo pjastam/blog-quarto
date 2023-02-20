@@ -10,3 +10,10 @@ title-block-banner: true
 # Enable commenting on blog posts
 comments:
   hypothesis: true
+  
+# Add table of contents to the right sidebar
+format:
+  html:
+    toc: true
+    html-math-method: katex
+    css: styles.css
