@@ -43,7 +43,7 @@ $$\log(\lambda_{i,j}) = \text{baseline} + \text{skill}_i -
 
 where baseline is the log average number of goals when both teams are equally good. Note that this model description does not capture the variation in the number of goals among football seasons and between home vs away teams.
 
-If we do allow for the latter type of variation, then the distribution of the goal outcome of a match between home team \$i)\]{.math .inline} and away team $j$ in season $t$ can be described as follows:
+If we do allow for the latter type of variation, then the distribution of the goal outcome of a match between home team $i$ and away team $j$ in season $t$ can be described as follows:
 
 $$HomeGoals_{t,i,j} \sim
 \text{Poison}(\lambda_{\text{home},t,i,j})$$ $$AwayGoals_{t,i,j} \sim
