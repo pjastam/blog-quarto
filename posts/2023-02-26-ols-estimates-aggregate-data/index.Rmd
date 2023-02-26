@@ -1,0 +1,196 @@
+---
+title: "Regression Analysis of Aggregate Data in R"
+description: "Aggregate microdata with a continuous outcome variable and categorical predictors and derive the individual-level regression coefficients and standard errors afterwards."
+author: "Piet Stam"
+date: "2023-02-26"
+categories: [R]
+image: "640px-Diagram_of_aggregate_data_chrom.png"
+image-alt: "Image by [Chubbylilrabbit - Own work](https://commons.wikimedia.org/w/index.php?curid=96172095), CC BY-SA 4.0, adapted by Piet Stam"
+reference-location: margin
+draft: false
+editor: visual
+execute: 
+  warning: false
+  error: true
+---
+
+## Introduction
+
+When dealing with large sets of data or sensitive individual-level information, researchers often use a technique to vertically [aggregate the data](https://en.wikipedia.org/wiki/Aggregate_data). This involves combining the data into larger groups to conserve computer resources or maintain privacy.
+
+But a key question arises: can statistical analyses based on this aggregated data still yield accurate results? The answer, at least for regression analysis, is a resounding yes. In fact, we can use the estimation results based on the aggregate data to derive the estimates of a linear regression based on the original, individual-level data.
+
+To help illustrate this concept, I've written R code to reproduce an example from a scientific publication where the authors provided the data and code in SAS. With this example, you can see how to aggregate the data and derive the original regression results.
+
+## The example
+
+Rahim Moineddin and Marcelo Luis Urquia have shown that the estimated coefficients of an individual-level regression model and aggregate-level regression model are identical in case of a continuous outcome variable and categorical predictors.[^1] Although such equality does not hold for the standard errors of these point estimates, however, they show how to derive the individual-level standard errors from the aggregate data. Furthermore, they added SAS code and the example data set to show us the way.[^2] In this post, I provide the R code to reproduce this example.
+
+[^1]: They are the authors of the publication "[Regression analysis of aggregate continuous data](https://doi.org/10.1097/ede.0000000000000172)".
+
+[^2]: These can be found in their [Supplemental Digital Content](https://links.lww.com/EDE/A830) document.
+
+## Read data
+
+The example data that I will use is in the file called `wic.txt`. These are the example data that the aforementioned authors use to illustrate the application of their method in SAS. In this example, they focused on the association between receipt of [WIC](http://www.fns.usda.gov/wic/about-wic) (The Special Supplemental Nutrition Program for Women, Infants, and Children) food for the mother during this pregnancy and gestational weight gain. The example data are scraped from the fourth section of their Supplemental Digital Content document.
+
+It contains four variables:
+
+-   Weight gain during pregnancy in pounds (lb) (`wtgain`)
+
+-   Receipt of WIC food (`wic`)
+
+-   Race/ethnicity (`mracethn`)
+
+-   Late or no prenatal care (`latecare`)
+
+Let's read the data.
+
+```{r}
+library(readtext)
+library(dplyr)
+data <- readtext("https://cdn-links.lww.com/permalink/ede/a/ede_25_6_2014_07_23_urquia_ede14-408_sdc1.doc") %>% 
+  subset(select = "text") %>% 
+  { read.table(text=sub(".*4) individual-level dataset", "", .), header=TRUE) }
+```
+
+## Apply transformations
+
+Before we perform the regression, we apply data transformations in the same way that they are applied in the second section of the Supplemental Digital Content document. First, the weight gain during pregnancy in kilograms (`wtgaink`) is calculated by multiplication of the weight gain during pregnancy in pounds (lb) (`wtgain`) by the conversion factor `0.453592`. Second, the categorical variables `wic`, `mracethn` and `latecare` are transformed to the factor type. Third, the reference level of the categorical variables `mracethn` is set to the last category called 'Non-Hispanic Blacks'. Finally, the `wtgain` variable is no longer needed and therefore dropped.
+
+```{r}
+db_indiv <- data %>%
+  rename_all(tolower) %>%
+  mutate(
+    wtgaink = wtgain * 0.453592,
+    wic = as.factor(wic),
+    mracethn = as.factor(mracethn),
+    mracethn = relevel(mracethn, ref = 3),
+    latecare = as.factor(latecare)
+  ) %>%
+  select(wtgaink, wic, mracethn, latecare)
+```
+
+## Fit regression model
+
+The table presented in the publication by Moineddin and Urquia shows the estimation results of three models. The first model has a single predictor, the second model three predictors and the third model includes interaction effects among some of the aforementioned predictors. Note that in all three models, the continuous outcome `wtgaink` is predicted by a set of variables which are exclusively of the categorical type.
+
+For reasons of brevity, let's do the exercise for one of the three models. We choose the second model as this is also the model that is coded in SAS in the aforementioned Supplemental Digital Content document. Let's first estimate the model parameters based on individual data. The results appear to be the same as to those in the aforementioned table, with one notable exception: the estimates of the constant term.[^3]
+
+[^3]: I did a quick check and got the authors' estimate of the constant term after some recoding of the predictor variables. You can do this quick check yourself with this [gist](https://gist.github.com/pjastam/14cfd2a60b0787239ed6a2f18c3ec03b#file-quick-check-r).
+
+```{r}
+model_indiv <-
+  lm(
+    formula = wtgaink ~ wic + mracethn + latecare, 
+    data = db_indiv
+  )
+summ_indiv <- summary(model_indiv)
+summ_indiv
+```
+
+## Aggregate data
+
+Next let's aggregate the data set. The aggregate data set contains averages of the outcome variable and frequencies of the categorical variables *for all combinations of the set of categorical predictors*. Thus, for all unique combinations of the categorical variables, we calculate the number of individual records `N`, the mean `meany` of the continuous variable `wtgaink`, and its standard deviation `stdy`. These aggregates suffice for our exercise to derive the individual-level point estimates and their standard errors afterwards.
+
+```{r}
+db_aggr <-
+  db_indiv %>%
+  group_by(across(c(wic, mracethn, latecare))) %>%
+  summarise(
+    meany = mean(wtgaink),
+    stdy = sd(wtgaink),
+    N = length(wtgaink)
+  ) %>%
+  ungroup()
+```
+
+Based on the aggregate data, a weighted regression model for the `meany` variable is fitted with `N` being the weight variable. Note that the variable `stdy` is not used in this step.
+
+```{r}
+model_aggr <-
+  lm(
+    formula = meany ~ wic + mracethn + latecare,
+    data = db_aggr,
+    weights = N
+  )
+summ_aggr <- summary(model_aggr)
+summ_aggr
+```
+
+## Derive original estimates
+
+Now it's time to derive the individual-level estimates of the coefficients and standard errors based on these aggregate results. Deriving the former is very easy, because the estimated coefficients at the aggregate level are identical to those at the individual level and therefore do not need any adjustment. A quick check confirms this equality.
+
+```{r}
+all.equal(coef(model_indiv),coef(model_aggr))
+```
+
+In order to derive the standard errors, however, a number of data transformations are necessary. To understand the purpose of these transformations, notice that there exists a fixed ratio between the individual level standard errors and those at the aggregate level.[^4] With our data this fixed ratio is equal to `r summ_indiv$coef[1,2]/summ_aggr$coef[1,2]` for all estimated coefficients:
+
+[^4]: This observation was also done [here](https://stats.stackexchange.com/questions/83223/standard-errors-in-weighted-least-squares-on-aggregated-data), using example data with both categorical outcome and predictor variables.
+
+```{r}
+summ_indiv$coef[,2]/summ_aggr$coef[,2]
+```
+
+Thus, given the aggregate data and estimations results, it seems a logical strategy to first calculate this fixed ratio and then mutiply the aggregate-level standard errors of the estimated coefficients by its inverse in order to derive the individual-level standard errors. The original SAS code for this procedure can be found in the Supplemental Digital Content document.
+
+My R code version is given below, for clarity I added a short description of what's being calculated above each line of code. The aforementioned inverse is called inflation `factor`, which is the ratio of the square roots `errorms` and `p_v`, where `errorms` is the aggregate-level residual variance and `p_v` the so-called pooled variance being an estimate of the variance of the individual-level outcome variable.[^5] As suggested, the aggregate-level standard errors called `StdErr` are then multiplied by this to derive the individual-level standard errors called `standard_error` that we are looking for.
+
+[^5]: See [Wikipedia](https://en.wikipedia.org/wiki/Pooled_variance#Definition_and_computation) for a definition of pooled variance (assuming non-uniform sample sizes).
+
+```{r}
+standard_errors <-
+  db_aggr %>%
+  mutate(
+    # degrees of freedom used to calculate stdy
+    n_1 = N - 1,
+    # total sum of squares derived from stdy
+    S_n_1 = stdy ^ 2 * n_1
+  ) %>%
+  summarise(
+    # degrees of freedom
+    n_k = sum(n_1),
+    # total sum of squares
+    S2_k = sum(S_n_1),
+    # pooled variance (i.e. weighted average of group variances)
+    p_v = S2_k / n_k,
+    # aggregate-level residual variance
+    errorms = summ_aggr$sigma ^ 2,
+    # inflation factor
+    factor = sqrt(p_v / errorms),
+    # aggregate-level standard errors
+    StdErr = summ_aggr$coef[ , 2],
+    # individual-level standard errors
+    standard_error = StdErr * factor
+  )
+```
+
+## Show table
+
+The variable `factor` is a vector of 5 identical elements equal to `r standard_errors$factor[1]`, which is an estimate of the inflation factor that we were looking for. The table below shows the estimated standard errors, which match the standard errors of the coefficients estimated by the individual-level regression as desired. As a validity check, compare the parameter estimates in this table with the individual-level regression estimates and those reported in the Moineddin and Urquia publication.
+
+```{r}
+library(insight)
+standard_errors %>%
+  mutate(
+    estimate = coefficients(model_aggr),
+    z = estimate / standard_error,
+    p = 2 * (1 - pnorm(abs(z))),
+    pvalue = format_p(p, stars = TRUE),
+    CI_low = estimate - 1.96 * standard_error,
+    CI_high = estimate + 1.96 * standard_error,
+  ) %>%
+  bind_cols("predictors" = names(standard_errors$standard_error)) %>% 
+  select(predictors, estimate, standard_error, CI_low, CI_high, z, pvalue) %>%
+  format_table(digits = 3, ci_digits = 3)
+```
+
+## What's next?
+
+In the above example the ordinary least-squares algorithm was used to estimate the parameters of a linear regression. With the R code presented here, one can apply this algorithm to aggregate data and derive both point estimates and standard errors afterwards to reduce the use of scarce computer resources.[^6] As this procedure is especially useful for doing linear regression based on BIG data, a logical next question is whether vertical aggregation is also helpful with other algorithms usually applied to BIG data as well, such as random forest. This may be the subject of another blog post.
+
+[^6]: Here is a [gist](https://gist.github.com/pjastam/14cfd2a60b0787239ed6a2f18c3ec03b#file-ols-estimates-aggegrate-data-r) with the complete example code.
+
+Happy coding!
