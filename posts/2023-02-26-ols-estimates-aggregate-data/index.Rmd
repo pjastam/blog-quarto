@@ -3,6 +3,7 @@ title: "Regression Analysis of Aggregate Data in R"
 description: "Aggregate microdata with a continuous outcome variable and categorical predictors and derive the individual-level regression coefficients and standard errors afterwards."
 author: "Piet Stam"
 date: "2023-02-26"
+date-modified: "2023-03-05"
 categories: [R]
 image: "640px-Diagram_of_aggregate_data_chrom.png"
 image-alt: "Image by [Chubbylilrabbit - Own work](https://commons.wikimedia.org/w/index.php?curid=96172095), CC BY-SA 4.0, adapted by Piet Stam"
@@ -105,7 +106,9 @@ db_aggr <-
   ungroup()
 ```
 
-Based on the aggregate data, a weighted regression model for the `meany` variable is fitted with `N` being the weight variable. Note that the variable `stdy` is not used in this step.
+## Derive original estimates
+
+Now it's time to derive the individual-level estimates of the coefficients and standard errors based on these aggregate results. Based on the aggregate data, a weighted regression model for the `meany` variable is fitted with `N` being the weight variable. Note that the variable `stdy` is not used in this step.
 
 ```{r}
 model_aggr <-
@@ -118,9 +121,7 @@ summ_aggr <- summary(model_aggr)
 summ_aggr
 ```
 
-## Derive original estimates
-
-Now it's time to derive the individual-level estimates of the coefficients and standard errors based on these aggregate results. Deriving the former is very easy, because the estimated coefficients at the aggregate level are identical to those at the individual level and therefore do not need any adjustment. A quick check confirms this equality.
+Deriving the coefficients appears to be very easy, because their estimates at the aggregate level are identical to those at the individual level and therefore do not need any adjustment. A quick check confirms this equality.
 
 ```{r}
 all.equal(coef(model_indiv),coef(model_aggr))
@@ -134,9 +135,9 @@ In order to derive the standard errors, however, a number of data transformation
 summ_indiv$coef[,2]/summ_aggr$coef[,2]
 ```
 
-Thus, given the aggregate data and estimations results, it seems a logical strategy to first calculate this fixed ratio and then mutiply the aggregate-level standard errors of the estimated coefficients by its inverse in order to derive the individual-level standard errors. The original SAS code for this procedure can be found in the Supplemental Digital Content document.
+Thus, given the aggregate data and estimations results, it seems a logical strategy to first calculate this fixed ratio and then mutiply the aggregate-level standard errors by its inverse in order to arrive at the individual-level standard errors. This inverse is called an inflation factor. The original SAS code for this procedure can be found in the Supplemental Digital Content document.
 
-My R code version is given below, for clarity I added a short description of what's being calculated above each line of code. The aforementioned inverse is called inflation `factor`, which is the ratio of the square roots `errorms` and `p_v`, where `errorms` is the aggregate-level residual variance and `p_v` the so-called pooled variance being an estimate of the variance of the individual-level outcome variable.[^5] As suggested, the aggregate-level standard errors called `StdErr` are then multiplied by this to derive the individual-level standard errors called `standard_error` that we are looking for.
+My R code for deriving the individual-level standard errors is given below. For clarity, I added a short description of what's being calculated above each line of code. We estimate the inflation factor by the ratio of the square roots of the aggregate-level residual variance `errorms` and the so-called pooled variance `p_v`.[^5] We call this ratio `factor`. It is an estimate of the inflation factor, because the pooled variance in the denominator is an estimate of the variance of the individual-level outcome variable. Finally, the aggregate-level standard errors called `StdErr` are multiplied by this `factor` to derive the individual-level standard errors called `standard_error` that we are looking for. 
 
 [^5]: See [Wikipedia](https://en.wikipedia.org/wiki/Pooled_variance#Definition_and_computation) for a definition of pooled variance (assuming non-uniform sample sizes).
 
@@ -169,7 +170,7 @@ standard_errors <-
 
 ## Show table
 
-The variable `factor` is a vector of 5 identical elements equal to `r standard_errors$factor[1]`, which is an estimate of the inflation factor that we were looking for. The table below shows the estimated standard errors, which match the standard errors of the coefficients estimated by the individual-level regression as desired. As a validity check, compare the parameter estimates in this table with the individual-level regression estimates and those reported in the Moineddin and Urquia publication.
+The variable `factor` has 5 identical elements equal to `r standard_errors$factor[1]`, which differs only very slightly from the true inflation factor. The resulting standard errors are reported in the table below. These match the standard errors estimated by the individual-level regression as desired. In addition to the standard errors, the table also shows the estimated coefficients, the lower and upper bounds of the confidence intervals, the z-scores and the p-values. As a validity check, compare the estimates reported here with the individual-level regression estimates shown above and with the estimates reported in the Moineddin and Urquia publication.
 
 ```{r}
 library(insight)
