@@ -27,7 +27,7 @@ website:
       - text: Pubs
         href: publications.qmd
       - text: Talks
-        href: "https://talks.pietstam.nl"
+        href: talks.qmd
       - text: Favs
         href: favorites.qmd
       - icon: rss
