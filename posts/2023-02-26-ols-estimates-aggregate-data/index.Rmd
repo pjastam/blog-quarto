@@ -3,7 +3,7 @@ title: "Regression Analysis of Aggregate Data in R"
 description: "Aggregate microdata with a continuous outcome variable and categorical predictors and derive the individual-level regression coefficients and standard errors afterwards."
 author: "Piet Stam"
 date: "2023-02-26"
-date-modified: "2023-03-05"
+date-modified: "2023-04-03"
 categories: [R]
 image: "640px-Diagram_of_aggregate_data_chrom.png"
 image-alt: "Image by [Chubbylilrabbit - Own work](https://commons.wikimedia.org/w/index.php?curid=96172095), CC BY-SA 4.0, adapted by Piet Stam"
@@ -135,9 +135,9 @@ In order to derive the standard errors, however, a number of data transformation
 summ_indiv$coef[,2]/summ_aggr$coef[,2]
 ```
 
-Thus, given the aggregate data and estimations results, it seems a logical strategy to first calculate this fixed ratio and then mutiply the aggregate-level standard errors by its inverse in order to arrive at the individual-level standard errors. This inverse is called an inflation factor. The original SAS code for this procedure can be found in the Supplemental Digital Content document.
+Thus, given the aggregate data and estimations results, it seems a logical strategy to first calculate this fixed ratio and then multiply it by the aggregate-level standard errors in order to arrive at the individual-level standard errors. This fixed ratio is called an inflation factor. The original SAS code for this procedure can be found in the Supplemental Digital Content document.
 
-My R code for deriving the individual-level standard errors is given below. For clarity, I added a short description of what's being calculated above each line of code. We estimate the inflation factor by the ratio of the square roots of the aggregate-level residual variance `errorms` and the so-called pooled variance `p_v`.[^5] We call this ratio `factor`. It is an estimate of the inflation factor, because the pooled variance in the denominator is an estimate of the variance of the individual-level outcome variable. Finally, the aggregate-level standard errors called `StdErr` are multiplied by this `factor` to derive the individual-level standard errors called `standard_error` that we are looking for. 
+My R code for deriving the individual-level standard errors is given below. For clarity, I added a short description of what's being calculated above each line of code. We estimate the inflation factor `factor` by the ratio of the square roots of the so-called pooled variance `p_v` and the aggregate-level residual variance `errorms`.[^5] This ratio is an estimate of the inflation factor, because `p_v` is an estimate of the variance of the individual-level outcome variable. Finally, the aggregate-level standard errors called `StdErr` are multiplied by this `factor` to derive the individual-level standard errors called `standard_error` that we are looking for.
 
 [^5]: See [Wikipedia](https://en.wikipedia.org/wiki/Pooled_variance#Definition_and_computation) for a definition of pooled variance (assuming non-uniform sample sizes).
 
