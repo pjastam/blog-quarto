@@ -4,8 +4,8 @@ description: "This is a how-to guide to build and deploy a Quarto website to Net
 author: "Piet Stam"
 date: "2023-05-29"
 categories: [digital transformation]
-#image: "640px-Diagram_of_aggregate_data_chrom.png"
-#image-alt: "Image by [Chubbylilrabbit - Own work](https://commons.wikimedia.org/w/index.php?curid=96172095), CC BY-SA 4.0, adapted by Piet Stam"
+image: "img/quarto-ghactions-netlify-rstudio.png"
+image-alt: ""
 reference-location: margin
 draft: false
 editor: source
