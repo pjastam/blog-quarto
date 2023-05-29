@@ -1,0 +1,163 @@
+---
+title: "GitHub template for Quarto website on Netlify"
+description: "This is a how-to guide to build and deploy a Quarto website to Netlify. GitHub Actions is used to build and deploy and RStudio as IDE."
+author: "Piet Stam"
+date: "2023-05-29"
+categories: [digital transformation]
+#image: "640px-Diagram_of_aggregate_data_chrom.png"
+#image-alt: "Image by [Chubbylilrabbit - Own work](https://commons.wikimedia.org/w/index.php?curid=96172095), CC BY-SA 4.0, adapted by Piet Stam"
+reference-location: margin
+draft: false
+editor: source
+execute: 
+  warning: false
+  error: true
+---
+
+## Use case
+
+To enhance each of my research projects, I aim to create an all-inclusive compendium and share it through a captivating [Quarto](https://quarto.org/) website. I am keen on constructing and deploying this website with the seamless integration of [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) and [{{< iconify bxl netlify >}} Netlify](https://www.netlify.com/). By utilizing [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions), I can ensure that rendering and publishing processes are effortlessly triggered with every commit made to the remote repository on [{{< fa brands github >}} GitHub](https://github.com/). To facilitate this, I rely on the powerful IDE called [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/), which enables me to efficiently code the pipeline, including the creation of the [Quarto](https://quarto.org/) website, setting up [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions), and establishing a connection with [{{< iconify bxl netlify >}} Netlify](https://www.netlify.com/). Once implemented, any commit, regardless of the IDE used, will automatically build and deploy the website to [{{< iconify bxl netlify >}} Netlify](https://www.netlify.com/). It would be delightful to utilize this as a template for all my future research projects.
+
+## Prerequisites
+
+-   The [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/) IDE (to code the pipeline)
+
+-   A [{{< fa brands github >}} GitHub](https://github.com/) account (to be able to use [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions))
+
+-   A [{{< iconify bxl netlify >}} Netlify](https://netlify.com/) account (to publish the website to)
+
+## Step-by-step guide
+
+Here, the steps are given that you must follow to build a [Quarto](https://quarto.org/) website for \[the use case\]{use-case}. In the next section, you will see how to get the same results fully relying on [{{< iconify bxl netlify >}} Netlify](https://netlify.com/) instead of [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions). After that, it is shown how to use the [{{< fa brands github >}} GitHub](https://github.com/) template. Using this template, you do not need to manually perform this guide step by step each time you need a [Quarto](https://quarto.org/) website as a starter.
+
+1.  Fire up [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/) and choose `File` → `New Project…` → `New Directory` → `Quarto Website`
+
+2.  Fill out the details in the panel, for example like in the figure below, and click on the `Create Project` button: ![](img/rstudio-create-new-project.png)
+
+3.  Execute the `quarto publish` [command for {{< iconify bxl netlify >}} Netlify](https://quarto.org/docs/publishing/netlify.html#publish-command) in the **Terminal** pane of [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/):
+
+    ```         
+    quarto publish netlify
+    ```
+
+    After you press `Y` to publish with you default account, this automatically creates a `_publish.yml` file in the local repository that looks like the example below, but with the appropriate id and url values for your site:
+
+    ```         
+    - source: project
+      netlify:
+        - id: d1983ae8-da83-4431-928f-3debf80a02a5
+          url: 'https://splendorous-bublanina-d544bb.netlify.app'
+    ```
+
+4.  Add the following lines to the `_quarto.yml` file in order to make sure that [code is only executed locally](https://quarto.org/docs/publishing/netlify.html#freezing-computations-1):
+
+    ```         
+    execute:
+      freeze: auto  # Re-render only when source changes
+    ```
+
+5.  Fully re-render your site in the **Terminal** pane:
+
+    ```         
+    quarto render
+    ```
+
+6.  Add the output directory of your project to .gitignore:
+
+    ```         
+    /_site/
+    ```
+
+7.  Go to the Git pane of [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/) to commit the files created thus far to your local repository: `Git` → `Commit pending changes` → select all files → `Stage` all files → write a `Commit message`, for example 'First commit' → click the `Commit` button.
+
+8.  Execute this command in the **Console** pane of [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/) to push your local repo to [{{< fa brands github >}} GitHub](https://github.com/):
+
+    ```         
+    usethis::use_github(private = TRUE)
+    ```
+
+    This will create a **private** remote repository at [{{< fa brands github >}} GitHub](https://github.com/). You may change the argument `private` to `FALSE` if you want the remote repository to be **public** right away, or change this manually in the settings section of your [{{< fa brands github >}} GitHub](https://github.com/) repository at some later moment.
+
+9.  Add [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) to your project by creating the YAML file `publish.yml` and save it to `.github/workflows/publish.yml`:
+
+    ```         
+    on:
+      workflow_dispatch:
+      push:
+        branches: main
+
+    name: Quarto Publish
+
+    jobs:
+      build-deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Check out repository
+            uses: actions/checkout@v2 
+
+          - name: Set up Quarto
+            uses: quarto-dev/quarto-actions/setup@v2
+
+          - name: Render and Publish
+            uses: quarto-dev/quarto-actions/publish@v2
+            with:
+              target: netlify
+              NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+    ```
+
+10. Configure your [{{< fa brands github >}} GitHub](https://github.com/) with the credentials required for publishing to {{< iconify bxl netlify >}} [Netlify](https://www.netlify.com/). This is explained [in the Quarto docs](https://quarto.org/docs/publishing/netlify.html#netlify-credentials). In short:
+
+    -   find/create a personal access token at [the {{< iconify bxl netlify >}} Netlify applications page](https://app.netlify.com/user/applications)
+    -   go to the remote repository at {{< fa brands github >}} GitHub → `Settings` → `Secrets and variables` → `Actions` → click on the button `New repository secret`
+    -   fill out the name (i.e. `NETLIFY_AUTH_TOKEN`) and value of the personal access token
+
+11. Commit the `publish.yml` file and subsequently push your local repository (including the \_freeze directory) to [{{< fa brands github >}} GitHub](https://github.com/). As a consequence, your [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) workflow will start running and the website is automatically rendered and published to {{< iconify bxl netlify >}} [Netlify](https://www.netlify.com/). Each subsequent (commit and) push will trigger the [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) workflow to start running in the same way.
+
+The [Quarto](https://quarto.org/) website that is described in this example is named [https://splendorous-bublanina-d544bb.netlify.app/]{.underline}]. To remember it better, I renamed this site name to [https://template-quarto-website.netlify.app/](https://template-quarto-website.netlify.app/) in my {{< iconify bxl netlify >}} Netlify account. You can visit the [Quarto](https://quarto.org/) website at this URL. I changed the `url` field in the `_publish.yml` file accordingly.
+
+The remote repository is located at [https://github.com/pjastam/template-quarto-website/](https://github.com/pjastam/template-quarto-website/). Note that this repository is set up as a template, see [this section]{#a-versatile-template} below.
+
+## ~~GitHub Actions~~
+
+Throughout this guide, I have assumed the utilization of a [GitHub Actions Runner](https://github.com/actions/runner) to execute the job defined by the [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) workflow. Note that achieving the same outcome is possible without relying on [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions). More specifically, you can delegate the responsibility of rendering the website to {{< iconify bxl netlify >}} [Netlify](https://www.netlify.com/) itself, which seamlessly handles the entire process before deploying it to their servers. To follow this alternative approach, simply skip the last three steps (9-11) outlined in this how-to guide and [add two extra files](https://quarto.org/docs/publishing/netlify.html#plugin-configuration) after adding the .gitigore file (i.e., after step 6). The files that must be added are a `netlify.toml` file with the following lines of code:
+
+```         
+[[plugins]]
+package = "@quarto/netlify-plugin-quarto"
+```
+
+and a `package.json` file with the following lines of code:
+
+```         
+{
+  "dependencies": {
+    "@quarto/netlify-plugin-quarto": "^0.0.5"
+  }
+}
+```
+
+Finalize with committing all files to you local repository (step 7) and pushing your local repository to {{< fa brands github >}} GitHub (step 8). Again, do **not** execute steps 9-11 in this scenario.
+
+## A versatile template
+
+The remote repository that results from the steps described [in this guide]{#step-by-step-guide} is located at [https://github.com/pjastam/template-quarto-website](https://github.com/pjastam/template-quarto-website). To use it as a template repository for your (an my) [Quarto](https://quarto.org/) websites, I have checked the `Template repository` box in the `Settings` tab of this remote repository.
+
+To actually use this template, there are 4 steps involved:
+
+1.  Use my template to create a new repository by clicking this button at the top of the remote repository:
+
+    ![](img/github-use-this-template.png)
+
+2.  Fire up [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/), choose `File` → `New Project…` → `Version Control` → `Git` and fill out the web URL [https://github.com/pjastam/template-quarto-website.git](https://github.com/pjastam/template-quarto-website.git) to clone the new repository to your local environment.
+
+3.  Delete the `_publish.yml` file and redo step 3 of [#the above guide]{step-by-step-guide} to create a new `_publish.yml` file with the {{< iconify bxl netlify >}} Netlify credentials for a connection a {{< iconify bxl netlify >}} Netlify site of your own.
+
+4.  Finally, perform step 11 in [#the above guide]{step-by-step-guide} and your [Quarto](https://quarto.org/) website will be up and running in any moment.
+
+You (and I) can now utilize this repository as a starting point, not only for research compendiums but also for [Quarto](https://quarto.org/) websites with different content.
+
+## What's Next?
+
+In this guide, I have created a [Quarto](https://quarto.org/) website to be used as a research compendium.[^1] However, the current content is rather limited for this use case. I plan to enhance it with essential compendium components and publish that repository on [{{< fa brands github >}} GitHub](https://github.com/) in the near future. You can use that as a reference template for your own research compendium, so stay tuned for updates!
+
+[^1]: [The Quarto docs about publishing on {{< iconify bxl netlify >}} Netlify](https://quarto.org/docs/publishing/netlify.html) were a nice starting point for this how-to guide.
