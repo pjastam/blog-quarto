@@ -1,5 +1,5 @@
 ---
-title: "Piet Stam"
+title: "Piet Stam, PhD"
 subtitle: "Entrepreneur, consultant & scientist"
 
 description-meta: "Entrepreneur, consultant & scientist. My passion is finding the right answers with observational data, computer code and human intelligence."
