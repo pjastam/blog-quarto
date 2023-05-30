@@ -3,6 +3,7 @@ title: "GitHub template for Quarto website on Netlify"
 description: "This is a how-to guide to build and deploy a Quarto website to Netlify. GitHub Actions is used to build and deploy and RStudio as IDE."
 author: "Piet Stam"
 date: "2023-05-29"
+date-modified: "2023-05-30"
 categories: [digital transformation]
 image: "img/quarto-ghactions-netlify-rstudio.png"
 image-alt: ""
