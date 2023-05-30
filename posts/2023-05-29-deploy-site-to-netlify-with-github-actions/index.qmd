@@ -116,7 +116,7 @@ Here, the steps are given that you must follow to build a [Quarto](https://quart
 
 The [Quarto](https://quarto.org/) website that is described in this example is named [https://splendorous-bublanina-d544bb.netlify.app/]{.underline}]. To remember it better, I renamed this site name to [https://template-quarto-website.netlify.app/](https://template-quarto-website.netlify.app/) in my {{< iconify bxl netlify >}} Netlify account. You can visit the [Quarto](https://quarto.org/) website at this URL. I changed the `url` field in the `_publish.yml` file accordingly.
 
-The remote repository is located at [https://github.com/pjastam/template-quarto-website/](https://github.com/pjastam/template-quarto-website/). Note that this repository is set up as a template, see [this section]{#a-versatile-template} below.
+The remote repository is located at [https://github.com/pjastam/template-quarto-website/](https://github.com/pjastam/template-quarto-website/). Note that this repository is set up as a template, see the section called \"A versatile template\" below.
 
 ## ~~GitHub Actions~~
 
@@ -141,7 +141,7 @@ Finalize with committing all files to you local repository (step 7) and pushing 
 
 ## A versatile template
 
-The remote repository that results from the steps described [in this guide]{#step-by-step-guide} is located at [https://github.com/pjastam/template-quarto-website](https://github.com/pjastam/template-quarto-website). To use it as a template repository for your (an my) [Quarto](https://quarto.org/) websites, I have checked the `Template repository` box in the `Settings` tab of this remote repository.
+The remote repository that results from the steps described in this step by step guide is located at [https://github.com/pjastam/template-quarto-website](https://github.com/pjastam/template-quarto-website). To use it as a template repository for your (an my) [Quarto](https://quarto.org/) websites, I have checked the `Template repository` box in the `Settings` tab of this remote repository.
 
 To actually use this template, there are 4 steps involved:
 
