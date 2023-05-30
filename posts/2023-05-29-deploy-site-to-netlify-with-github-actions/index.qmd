@@ -141,7 +141,7 @@ Finalize with committing all files to you local repository (step 7) and pushing 
 
 ## A versatile template
 
-The remote repository that results from the steps described in this step by step guide is located at [https://github.com/pjastam/template-quarto-website](https://github.com/pjastam/template-quarto-website). To use it as a template repository for your (an my) [Quarto](https://quarto.org/) websites, I have checked the `Template repository` box in the `Settings` tab of this remote repository.
+The remote repository that results from the steps described in this step by step guide is located at [https://github.com/pjastam/template-quarto-website](https://github.com/pjastam/template-quarto-website). To use it as a template repository for your [Quarto](https://quarto.org/) websites, I have checked the `Template repository` box in the `Settings` tab of this remote repository.
 
 To actually use this template, there are 4 steps involved:
 
@@ -151,9 +151,9 @@ To actually use this template, there are 4 steps involved:
 
 2.  Fire up [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/), choose `File` → `New Project…` → `Version Control` → `Git` and fill out the web URL [https://github.com/pjastam/template-quarto-website.git](https://github.com/pjastam/template-quarto-website.git) to clone the new repository to your local environment.
 
-3.  Delete the `_publish.yml` file and redo step 3 of [#the above guide]{step-by-step-guide} to create a new `_publish.yml` file with the {{< iconify bxl netlify >}} Netlify credentials for a connection a {{< iconify bxl netlify >}} Netlify site of your own.
+3.  Delete the `_publish.yml` file and redo step 3 of the step by step guide above to create a new `_publish.yml` file with the {{< iconify bxl netlify >}} Netlify credentials for a connection a {{< iconify bxl netlify >}} Netlify site of your own.
 
-4.  Finally, perform step 11 in [#the above guide]{step-by-step-guide} and your [Quarto](https://quarto.org/) website will be up and running in any moment.
+4.  Finally, perform step 11 of the step by step guide above and your [Quarto](https://quarto.org/) website will be up and running in any moment.
 
 You (and I) can now utilize this repository as a starting point, not only for research compendiums but also for [Quarto](https://quarto.org/) websites with different content.
 
