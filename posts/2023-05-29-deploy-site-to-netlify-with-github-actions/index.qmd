@@ -145,11 +145,13 @@ The remote repository that results from the steps described in this step-by-step
 
 To actually use this template, there are 6 steps involved:
 
-1.  Use my template to create your new repository by clicking this button at the top of the remote repository:
+1.  Use my template to create your new repository by clicking this button at the top of the remote repository at {{< fa brands github >}} GitHub:
 
     ![](img/github-use-this-template.png)
 
-2.  Fire up [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/), choose `File` → `New Project…` → `Version Control` → `Git` and fill out the web URL [https://github.com/pjastam/template-quarto-website.git](https://github.com/pjastam/template-quarto-website.git) to clone your new repository to your local environment.
+2.  Fire up [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/), choose `File` → `New Project…` → `Version Control` → `Git` and fill out the web URL of your new repository to clone it to your local environment. You can find this web URL at the top of your new repo at {{< fa brands github >}} GitHub: 
+
+    ![](img/github-local-clone-repo.png)
 
 3.  Delete the `_publish.yml` file from your local repository.
 
@@ -161,7 +163,7 @@ To actually use this template, there are 6 steps involved:
 
 5.  Execute step 10 of the [step-by-step guide](index.qmd#step-by-step-guide).
 
-6.  Execute step 11 of the [step-by-step guide](index.qmd#step-by-step-guide).
+6.  Execute step 11 of the [step-by-step guide](index.qmd#step-by-step-guide) for the files that are ready to commit: your newly created `_publish.yml` file and two files in the `_freeze` directory.
 
 Your [Quarto](https://quarto.org/) website will be up and running any moment.
 
