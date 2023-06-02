@@ -163,7 +163,7 @@ To actually use this template, there are 6 steps involved:
 
 5.  Execute step 10 of the [step-by-step guide](index.qmd#step-by-step-guide).
 
-6.  Execute step 11 of the [step-by-step guide](index.qmd#step-by-step-guide) for the files that are ready to commit: your newly created `_publish.yml` file and two files in the `_freeze` directory.
+6.  Execute step 11 of the [step-by-step guide](index.qmd#step-by-step-guide).
 
 Your [Quarto](https://quarto.org/) website will be up and running any moment.
 
