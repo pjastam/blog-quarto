@@ -143,7 +143,7 @@ Finalize with committing all files to you local repository (step 7) and pushing 
 
 The remote repository that results from the steps described in this step-by-step guide is located at [https://github.com/pjastam/template-quarto-website](https://github.com/pjastam/template-quarto-website). To use it as a template repository for your [Quarto](https://quarto.org/) websites, I have checked the `Template repository` box in the `Settings` tab of this remote repository. Furthermore, note that the two lines of code with the Netlify credentials (see step 3 of the [step-by-step guide](index.qmd#step-by-step-guide)) are commented out (i.e. deactivated). In this way, people are guarded from mistakenly using these credentials instead of the Netflify credentials of their own site.
 
-To actually use this template, there are 6 steps involved:
+To actually use this template, there are 7 steps involved:
 
 1.  Use my template to create your new repository by clicking this button at the top of the remote repository at {{< fa brands github >}} GitHub:
 
@@ -161,9 +161,13 @@ To actually use this template, there are 6 steps involved:
     Before continuing with step 5, please double-check that the `_publish.yml` file in your local repository now contains **your own {{< iconify bxl netlify >}} Netlify credentials**. Otherwise the workflow will never run the right way.
     :::
 
-5.  Execute step 10 of the [step-by-step guide](index.qmd#step-by-step-guide).
+5.  Revert the two `html.json` files to their original state (i.e. the state of this repository before the previous step):
 
-6.  Execute step 11 of the [step-by-step guide](index.qmd#step-by-step-guide).
+    ![](img/rstudio-revert-json-files.png)
+
+6.  Execute step 10 of the [step-by-step guide](index.qmd#step-by-step-guide).
+
+7.  Execute step 11 of the [step-by-step guide](index.qmd#step-by-step-guide).
 
 Your [Quarto](https://quarto.org/) website will be up and running any moment.
 
