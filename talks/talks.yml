@@ -12,3 +12,10 @@
     [{{< fa solid chalkboard-user >}} Course materials](https://talks.pietstam.nl/2023-05-15-talma-kennissessie-risicoverevening/) 
     [{{< fa brands github >}} GitHub repository](https://github.com/pjastam/talks/tree/main/2023-05-15-talma-kennissessie-risicoverevening)
   location: Teams meeting by Talma Institute, Amsterdam
+- title: "The math of risk equalization"
+  date: "2023-06-27"
+  description: |
+    In this workshop an introduction is given to the major mathematical issues with risk equalization modeling. We look at it from a theoretical perspective, and do some coding exercises to deeping our understanding.<BR>
+    [{{< fa solid chalkboard-user >}} Course materials](https://talks.pietstam.nl/2023-06-27-equalis-math-risk-equalization/) 
+    [{{< fa brands github >}} GitHub repository](https://github.com/pjastam/talks/tree/main/2023-06-27-equalis-math-risk-equalization)
+  location: Equalis/Vintura, Utrecht
