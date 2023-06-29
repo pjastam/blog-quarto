@@ -10,7 +10,7 @@ title-block-banner: true
 # Enable commenting on blog posts
 comments:
   giscus: 
-    repo: quarto-dev/quarto-docs
+    repo: pjastam/blog-quarto
     
 # Add table of contents to the right margin sidebar
 format:
