@@ -11,6 +11,9 @@ title-block-banner: true
 comments:
   giscus: 
     repo: pjastam/blog-quarto
+    category: Blog comments
+    category-id: DIC_kwDOH4uTY84CXjcD
+    mapping: pathname
     
 # Add table of contents to the right margin sidebar
 format:
