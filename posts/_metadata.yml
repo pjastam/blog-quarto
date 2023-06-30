@@ -21,3 +21,7 @@ format:
     toc: true
     html-math-method: katex
     css: styles.css
+    
+# Add a citation for each article: 
+  
+citation: true
