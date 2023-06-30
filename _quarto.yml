@@ -11,8 +11,6 @@ website:
   repo-url: https://github.com/pjastam/blog-quarto
   repo-actions: [edit, issue]
 
-  rel
-
   twitter-card:
     card-style: summary
     creator: "@pjastam"
@@ -20,6 +18,11 @@ website:
   open-graph: true
     
   navbar:
+    tools:
+      - icon: mastodon
+        href: https://mastodon.nl/@pjastam
+        text: Mastodon
+        rel: me
     left: 
       - icon: mastodon
         href: https://mastodon.nl/@pjastam
@@ -34,13 +37,7 @@ website:
         href: favorites.qmd
       - icon: rss
         href: posts.xml
-    tools:
-      - icon: mastodon
-        href: "https://mastodon.nl/@pjastam"
-        text: Mastodon
-        rel: me
         
-<a rel="me" href="">Mastodon</a>
   page-footer:
     left: |
       Copyright (c) 2001-2023 [Piet Stam](https://www.pietstam.nl). Except where otherwise noted, content on this site is licensed under a <br>
