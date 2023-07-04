@@ -1,0 +1,70 @@
+---
+title: "Accelerating strategic analysis: unleashing ChatGPT and Beautiful.ai"
+description: "In this post, I'll share how I leveraged ChatGPT and Beautiful.ai to turbocharge my strategic analysis for a startup company."
+author: "Piet Stam"
+date: "2023-07-04"
+categories: [digital transformation]
+image: "bing_laptop.png"
+image-alt: "Image by [Bing](https://www.bing.com/images/create/a-laptop-with-icons-of-a-slide-deck/64a32ec6db924606893070cc7bd2be6f?id=FTC3ZH4tqKeyF9Qh%2fZv%2fmg%3d%3d&view=detailv2&idpp=genimg&idpclose=1&FORM=SYDBIC), with the help of DALL·E, adapted by Piet Stam"
+reference-location: margin
+draft: false
+editor: source
+execute: 
+  warning: false
+  error: true
+---
+
+## Introduction
+
+Greetings, entrepreneurs and innovators! As a co-founder of two consulting firms, I'm always committed to exploring the forefront of integrating new tools into traditional methodologies. Today, I invite you on an exciting journey where cutting-edge technology meets strategic analysis. In this post, I'll share how I leveraged [ChatGPT](https://chat.openai.com/) and [Beautiful.ai](https://www.beautiful.ai/) to turbocharge my strategic analysis for startup company [Flowley](https://students.flowley.nl/), offering services to students in the Netherlands for maintaining a healthy work-life balance. 
+
+Oh, and by the way: the post that you are reading right now is a somewhat edited version of my final text. Edited by ChatGPT, of course. And the image is created by [Bing](https://www.bing.com/images/create/a-laptop-with-icons-of-a-slide-deck/64a32ec6db924606893070cc7bd2be6f?id=FTC3ZH4tqKeyF9Qh%2fZv%2fmg%3d%3d&view=detailv2&idpp=genimg&idpclose=1&FORM=SYDBIC) with the help of [DALL·E](https://openai.com/dall-e-2).
+
+## The Quest Begins: ChatGPT and Flowley
+
+Preparing for an initial meeting with Flowley, I sought to conduct a comprehensive strategic analysis based on the information available on their website. My eureka moment was to engage ChatGPT, the AI wizard from [OpenAI](https://openai.com/), to perform a SWOT-analysis and offer insights into their strategic positioning.
+
+My conversation with ChatGPT can be found [here](https://chat.openai.com/share/1f3096cf-76a7-42c4-a03e-e476d137387e). My side of the conversation consists of the three tasks that I asked ChatGPT to perform:
+
+1. Please do a SWOT-analysis of Flowley, based on a description of the profile of the company.
+
+2. Now update the SWOT analysis with information on a list of tools that the company offers.
+
+3. And can you describe the intersection of the values (mission/scope/value), capabilities (strength/competitive advantage) and opportunities (market demand, who else, if anyone offers this proposition?). Balancing this intersection is what is commonly called "the strategist's challenge".[^1]
+
+I fed ChatGPT with the information on the frontpage of Flowley's website. On their frontpage, there is [an introductory text](https://uu.flowley.nl/#flex-page), after which you have two choices to continue reading: "*Get started right away*" (in Dutch: "[*Ga direct aan de slag*](https://uu.flowley.nl/#theme-list)") or "*See how it works*" (in Dutch: "[*Bekijk hoe het werkt*](https://uu.flowley.nl/#more-about)"). For the first task, I gave ChatGPT the information behind the latter choice. For the second task, ChatGPT got the information behind the former choice, together with the aforementioned introductory text. No additional information was given for executing the third task.
+
+## Microsoft Powerpoint, of course?
+
+The results obtained from ChatGPT became the cornerstone of my preparations, but I knew that I needed a compelling visual aid to win hearts and minds in the meeting. I must confess: [Pavlovian conditioning](https://en.wikipedia.org/wiki/Classical_conditioning) led me fire up [Microsoft PowerPoint](https://www.microsoft.com/nl-nl/microsoft-365/powerpoint) without thinking twice, and choosing a nice template to fill out the text that was produced by ChatGPT (with a little help of me feeding the beast). I used the free "SWOT Analysis Template 3 (16:9)" as designed by [Superside](https://www.superside.com/).[^2] And although it took me some time to finish this, [the result](chatgpt.pdf) was what I needed as a preparation of my meeting with the startup. Off I go.
+
+A few days later, after the first meeting with Flowley, I realized that the process of manually producing the slides was also up for an efficiency improvement. So, as an exercise, I fed the text produced by ChatGPT to Beautiful.ai. Does this lead to slides that we prefer above those created manually in PowerPoint? Here is what happened.
+
+## A Stroke of Beauty: Enlisting Beautiful.ai
+
+After signing up for the free trial, I got a 2-minute intro *to become a pro* in using Beautiful.ai (as they claim). I decided that surfing to their "Designer Bot AI" was the way to go for me, because then I could feed it with the results produced by ChatGPT and ask it to compose a matching design without any further intervention by me.
+
+My prompt starts with this intro:
+
+"*A slide deck with the results of a strategic analysis for a startup company called Flowley that offers services to students to keep a healthy work-life balance. The strategic analysis consists of (1) the results of a SWOT-analysis and (2) the results of finding an optimal balance among their values (mission/scope/value), capabilities (strength/competitive advantage) and opportunities (market demand, who else, if anyone offers this proposition?). The results of the SWOT-analysis (1) are:*" 
+
+after which I copied the ChatGPT results of the second task as described above. Also I added the text:
+
+"*The results of the search for the right balance (2) are:*",
+
+after which I copied the ChatGPT results of the third task as described above. And then waited. And waited. And... Oops. there it was. Exactly 45 minutes after signing up with Beautiful.ai, there I had it: [a beautifully designed slide deck](beautiful_ai_and_chatgpt.pdf) with background images that are very much on topic. The inclusion of relevant images and slides addressing additional analyses showcased Beautiful.ai's flair for captivating presentations.
+
+## Clash of the Titans: PowerPoint vs. Beautiful.ai
+
+So how does the PowerPoint slide deck compare to the Beautiful.ai slide deck? And how does ChatGPT fit in? This is part of the evaluation phase of my journey by talking to with Flowley about the results. Without revealing the nitty gritty details of the next steps of the strategic positioning of Flowley, of course.
+
+In the epic clash of PowerPoint and Beautiful.ai, each had its strengths. In general, the conclusion in the meeting with Flowley was that the PowerPoint slides contain more to-the-point information than the slide deck generated by Beautiful.ai. This is especially the case as all the information of the SWOT-analysis by ChatGPT was manually integrated into the Powerpoint slides. Note that this even holds for the detailed explanations of the separate items of the SWOT-analysis: these explanations show up when hovering over them at the second slide of [the original Powerpoint file](chatgpt.pptx).
+
+On the other hand, the slide deck produced by Beautiful.ai has a design including photos that more closely relates to the target group of Flowley. Moreover, the slide deck includes slides that are useful for having the discussion about strategic positioning with the customer. For example, there are slides about additional analyses that might be considered. And again on the design: it is very beautiful indeed.
+
+## The Final verdict
+
+In conclusion, the partnership between ChatGPT and Beautiful.ai was a game-changer for my strategic analysis use case. The time saved and the exceptional results achieved were awe-inspiring. It was like having an AI-powered strategy consultant at my beck and call! While a complete strategic positioning requires more than a SWOT-analysis, the combined power of ChatGPT and Beautiful.ai proved invaluable for swift scans and initial meetings.
+
+[^1]: [Harris, J.D.](https://www.darden.virginia.edu/faculty-research/directory/jared-d-harris), [Lenox, M.J.](https://www.darden.virginia.edu/faculty-research/directory/michael-lenox), 2013. [The Strategist’s Toolkit](https://www.amazon.com/Strategists-Toolkit-Jared-D-Harris/dp/1615981977/), 7th edition. ed. Darden Business Publishing.
+[^2]: Superside.com, 25+ SWOT Analysis Templates (Free Downloads), https://www.superside.com/blog/swot-analysis-templates (accessed 6.13.23).
