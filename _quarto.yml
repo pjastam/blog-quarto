@@ -24,9 +24,6 @@ website:
         text: Mastodon
         rel: me
     left: 
-      - icon: mastodon
-        href: https://mastodon.nl/@pjastam
-    right:
       - text: Blog
         href: posts.qmd
       - text: Pubs
@@ -35,6 +32,7 @@ website:
         href: talks.qmd
       - text: Favs
         href: favorites.qmd
+    right:
       - icon: rss
         href: posts.xml
         
