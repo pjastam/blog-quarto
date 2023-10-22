@@ -1,10 +1,11 @@
 ---
-title: "My recent publications"
+title: "Some recent publications"
 
 description-meta: "Entrepreneur, consultant & scientist. My passion is finding the right answers with observational data, computer code and human intelligence."
 image: "profile.png"
 ---
 
+<ul id="recordList"></ul>
 <script>
 {{< include zotero.js >}}
 </script>
