@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Create a list item element and set its innerHTML
                 var listItem = document.createElement("li");
                 listItem.innerHTML = `
-                    ${creators.map(creator => `${creator.lastName}`).join(", ")} (${year}). <a href="${url}" target="_blank"><i>${title}</i></a>${publicationTitle ? `. ${publicationTitle}` : ''}${institution ? `. ${institution}` : ''}.
+                    ${creators.map(creator => `${creator.lastName}`).join(", ")} (${year}). ${url ? `<a href=\"${url}\" target=\"_blank\"><i>${title}</i></a>` : `${title}`}${publicationTitle ? `. ${publicationTitle}` : ''}${institution ? `. ${institution}` : ''}.
                 `;
                 // Append the list item to the <ul> element
                 recordList.appendChild(listItem);
