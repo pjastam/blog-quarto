@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var publicationTitle = record.data.publicationTitle;
                 var url = record.data.url;
                 var institution = record.data.institution;
+                var extra = record.data.extra;
 
                 // Extract the year from the date
                 var year = new Date(date).getFullYear();
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Create a list item element and set its innerHTML
                 var listItem = document.createElement("li");
                 listItem.innerHTML = `
-                    ${creators.map(creator => `${creator.lastName}`).join(", ")} (${year}). ${url ? `<a href=\"${url}\" target=\"_blank\"><i>${title}</i></a>` : `${title}`}${publicationTitle ? `. ${publicationTitle}` : ''}${institution ? `. ${institution}` : ''}.
+                    ${creators.map(creator => `${creator.lastName}`).join(", ")} (${year}). ${url ? `<a href=\"${url}\" target=\"_blank\"><i>${title}</i></a>` : `${title}`}${publicationTitle ? `. ${publicationTitle}` : ''}${institution ? `. ${institution}` : ''}${extra ? `. ${extra}` : ''}.
                 `;
                 // Append the list item to the <ul> element
                 recordList.appendChild(listItem);
