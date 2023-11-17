@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     recordList.innerHTML = '<li>Loading data, please wait...</li>';
 
     // Define your JSON data URL
-    const url = 'https://api.zotero.org/users/24775/publications/items?start=0&limit=9&format=json&itemType=journalArticle || Report&sort=date&direction=desc';
+    const url = 'https://api.zotero.org/users/24775/publications/items?start=0&limit=9&format=json&itemType=journalArticle || Report || magazineArticle&sort=date&direction=desc';
 
     fetch(url)
         .then(response => response.json()) // Parse the response as JSON
