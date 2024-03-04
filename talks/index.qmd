@@ -1,0 +1,36 @@
+---
+title: "My talks"
+listing:
+  - id: talks_2023
+    contents: talks_2023.yml
+    sort: "date desc"
+    type: table
+    fields: [title, date, description, location]
+    field-display-names:
+      location: "Location"
+    sort-ui: false
+    filter-ui: false
+
+  - id: talks_2022
+    contents: talks_2022.yml
+    sort: "date desc"
+    type: table
+    fields: [title, date, description, location]
+    field-display-names:
+      location: "Location"
+    sort-ui: false
+    filter-ui: false
+page-layout: full
+---
+
+This page is the portal to my talks. In the description column you find icons associated with course materials or the GitHub repository. If there is a talk that interests you, just click on these icons to find out whether there is something that suits you. If you have any suggestions, please contribute! Note the copyright and license statement in the footer of this page.
+
+## 2023
+
+::: {#talks_2023}
+:::
+
+## 2022
+
+::: {#talks_2022}
+:::
