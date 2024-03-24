@@ -24,6 +24,8 @@ website:
         text: Mastodon
         rel: me
     left: 
+      - text: News
+        href: news.qmd
       - text: Blog
         href: posts.qmd
       - text: Pubs
