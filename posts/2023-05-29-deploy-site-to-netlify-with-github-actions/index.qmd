@@ -3,7 +3,7 @@ title: "GitHub template for Quarto website on Netlify"
 description: "This how-to guide demonstrates the utilization of GitHub Actions to build and deploy a Quarto website on Netlify. RStudio is used as IDE. The result is a versatile template that allows you to easily implement the entire workflow."
 author: "Piet Stam"
 date: "2023-05-29"
-date-modified: "2023-06-18"
+date-modified: "2024-05-22"
 categories: [digital transformation]
 image: "img/quarto-ghactions-netlify-rstudio.png"
 image-alt: ""
@@ -35,10 +35,10 @@ Here, the steps are given that you must follow to build a [Quarto](https://quart
 
 2.  Fill out the details in the panel, for example like in the figure below, and click on the `Create Project` button: ![](img/rstudio-create-new-project.png)
 
-3.  Add a `.gitattributes` file and change the RStudio line endings setting to `None` along the lines of [my gist](https://gist.github.com/pjastam/03f8b9eca4e97544f02bc55c464f8514#make-adjustments-in-remote-repository) about line ending issues with Quarto.
+3.  ~~Add a `.gitattributes` file and change the RStudio line endings setting to `None` along the lines of [my gist](https://gist.github.com/pjastam/03f8b9eca4e97544f02bc55c464f8514#make-adjustments-in-remote-repository) about line ending issues with Quarto.~~
 
     ::: {.callout-important}
-    This step was added to my original post and is an important step to take to avoid GitHub Actions from failing due to hash problems. This step will no longer be necessary if [this issue](https://github.com/quarto-dev/quarto-cli/issues/3599) is addressed.
+    Step 3 does no longer apply. I added this step 3 to my original post to prevent GitHub Actions from failing due to hash issues caused by end-of-line character differences between operating systems (see [my gist](https://gist.github.com/pjastam/03f8b9eca4e97544f02bc55c464f8514) for more). However, this step 3 is no longer needed since the removal of the hash issue by [this pull request](https://github.com/quarto-dev/quarto-cli/pull/5983).
     :::
 
 4.  Execute the `quarto publish` [command for {{< iconify bxl netlify >}} Netlify](https://quarto.org/docs/publishing/netlify.html#publish-command) in the **Terminal** pane of [{{< iconify cib rstudio >}} RStudio](https://posit.co/products/open-source/rstudio/):
