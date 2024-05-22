@@ -85,7 +85,7 @@ Here, the steps are given that you must follow to build a [Quarto](https://quart
 
     This will create a **private** remote repository at [{{< fa brands github >}} GitHub](https://github.com/). You may change the argument `private` to `FALSE` if you want the remote repository to be **public** right away, or change this manually in the settings section of your [{{< fa brands github >}} GitHub](https://github.com/) repository at some later moment.
 
-10.  Add [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) to your project by creating the YAML file `publish.yml` and save it to `.github/workflows/publish.yml`:
+10. Add [{{< fa brands github >}} GitHub Actions](https://github.com/features/actions) to your project by creating the YAML file `publish.yml` and save it to `.github/workflows/publish.yml`:
 
     ```{.yaml}
     on:
