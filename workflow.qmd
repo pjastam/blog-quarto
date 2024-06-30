@@ -9,36 +9,36 @@ image: "profile.png"
   
 I manage my references using [Zotero](https://zotero.org/). While reading a manuscript, I add color-coded annotations. After completing the reading, I create a note from these annotations and then reorganize and refine the content.
 
-Add-ons: Zotero Tag, Better BibTeX
+Add-ons: [Zotero Tag](https://github.com/windingwind/zotero-actions-tags), [Better BibTeX](https://github.com/retorquere/zotero-better-bibtex)
 
 ## Obsidian
 
-I use Obsidian for my knowledge management. I fetch the metadata from the manuscripts that have been stored in Zotero, including the Note from Annotations.
+I use [Obsidian](https://obsidian.md/) for my knowledge management. I fetch the metadata from the manuscripts that have been stored in Zotero, including the Note from Annotations.
 
 Plugins: Templater, Zotero Integration
 
-## Microsoft Office
+## Microsoft 365
 
-I use the Microsoft Office tools for my professional life. More specifically, I use Word, Excel, PowerPoint, Teams, Sharepoint, and Planner.
+I use the Microsoft 365 tools on a daily basis. More specifically, I use Word, Excel, PowerPoint, Teams, Sharepoint, and Planner.
 
-Add-ons: Think-Cell
+Add-ons: [Think-Cell](https://www.think-cell.com/en/)
 
 ## Quarto
 
-I use Quarto for creating websites. For example, my homepage is created with Quarto.
+I use [Quarto](https://quarto.org/) for creating websites. For example, this homepage of mine is created with Quarto.
 
-Add-ons: GitHub Actions
+Add-ons: [GitHub Actions](https://github.com/features/actions)
 
 ## R and RStudio
 
-I use R for finding relationships among variables in data sets. RStudio is used as my preferred IDE for R programming.
+I use [R](https://www.r-project.org/) for finding relationships among variables in data sets. [RStudio](https://posit.co/downloads/) is used as my preferred IDE for R programming.
 
-I activated GitHub Copilot for code completion in RStudio. To this end, I applied the 9 steps as decribed in [the Setup section](https://docs.posit.co/ide/user/ide/guide/tools/copilot.html#setup) of the RStudio User Guide. In addition, you may toggle on the setting "Copilot Indexing" to index and read from other R, Python, or SQL files available in the current project than the active document alone (Tools --> Global Options --> Copilot --> “Index project files with GitHub Copilot)”.
+I activated [GitHub Copilot](https://github.com/features/copilot) for code completion in RStudio. To this end, I applied the 9 steps as decribed in [the Setup section](https://docs.posit.co/ide/user/ide/guide/tools/copilot.html#setup) of the RStudio User Guide. In addition, you may toggle on the setting "Copilot Indexing" to index and read from other R, Python, or SQL files available in the current project than the active document alone (Tools --> Global Options --> Copilot --> “Index project files with GitHub Copilot)”.
 
 I use the chattr package to to interact with GPT 4 and 3.5 in the Viewer pane of RStudio. You can initialize the chattr package running the R code in [my gist file](https://gist.github.com/pjastam/ec0e664fb2d620107873aba6e0f3d621). Note that, before you run this file, you should include your personal OpenAI secret key first. Of course, you also have the option to manually configure the chattr package by following the steps in [the chattr user guide](https://mlverse.github.io/chattr/).
 
-Plugins: GitHub Copilot and chattr
+Plugins: [GitHub Copilot](https://github.com/features/copilot) and [chattr](https://mlverse.github.io/chattr/)
 
 ## Inoreader
 
-I stay informed with Inoreader, focusing on news that interests me. The [Text-To-Speech feature with auto-advance support on mobile](https://www.inoreader.com/nl/blog/2022/05/listen-to-your-articles-on-the-go-with-text-to-speech.html) transforms articles into an audio stream, perfect for listening on the go—just like a podcast!” 📰🎧👍
+I stay informed with [Inoreader](https://www.inoreader.com/), focusing on news that interests me.

@@ -34,6 +34,8 @@ website:
         href: talks/index.qmd
       - text: Favs
         href: favorites.qmd
+      - text: Flow
+        href: workflow.qmd
     right:
       - icon: rss
         href: posts.xml
