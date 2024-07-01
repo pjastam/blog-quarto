@@ -7,13 +7,15 @@ image: "profile.png"
   
 ## Zotero
   
-I manage my references using [Zotero](https://zotero.org/). While reading a manuscript, I add color-coded annotations. After completing the reading, I create a note from these annotations and then reorganize and refine the content.
+I manage my references using [Zotero](https://zotero.org/). While reading a manuscript, I add color-coded annotations using the built-in Zotero functionality. After completing the reading, I create a Zotero note from these annotations and then reorganize and refine the content in this note for later reference (for example, to use it in Obsidian).
 
-Add-ons: [Zotero Tag](https://github.com/windingwind/zotero-actions-tags), [Better BibTeX](https://github.com/retorquere/zotero-better-bibtex)
+I’ve also incorporated several plugins into Zotero to make my life easier, for example the Aria plugin. This plugin provides me with an AI Research Assistant, powered by large language models, to expedite my process of reading, understanding, and recalling manuscripts. Aria requires the OpenAI GPT-4 model family. Currently, only Zotero 6 is supported.
+
+Add-ons: [Aria](https://github.com/lifan0127/ai-research-assistant), [Better BibTeX for Zotero](https://retorque.re/zotero-better-bibtex/), [Scite plugin for Zotero](https://github.com/scitedotai/scite-zotero-plugin), [Zotero PDF Preview](https://github.com/windingwind/zotero-pdf-preview#readme), [Zotero Tag](https://github.com/windingwind/zotero-actions-tags#readme), [Zotero Word for Windows Integration](https://www.zotero.org/support/word_processor_plugin_usage)
 
 ## Obsidian
 
-I use [Obsidian](https://obsidian.md/) for my knowledge management. I fetch the metadata from the manuscripts that have been stored in Zotero, including the Note from Annotations.
+I use [Obsidian](https://obsidian.md/) for my knowledge management. I fetch the metadata from the manuscripts that have been stored in Zotero, including the notes that I derived from the annotations that I added.
 
 Plugins: Templater, Zotero Integration
 
@@ -33,9 +35,9 @@ Add-ons: [GitHub Actions](https://github.com/features/actions)
 
 I use [R](https://www.r-project.org/) for finding relationships among variables in data sets. [RStudio](https://posit.co/downloads/) is used as my preferred IDE for R programming.
 
-I activated [GitHub Copilot](https://github.com/features/copilot) for code completion in RStudio. To this end, I applied the 9 steps as decribed in [the Setup section](https://docs.posit.co/ide/user/ide/guide/tools/copilot.html#setup) of the RStudio User Guide. In addition, you may toggle on the setting "Copilot Indexing" to index and read from other R, Python, or SQL files available in the current project than the active document alone (Tools --> Global Options --> Copilot --> “Index project files with GitHub Copilot)”.
+I activated GitHub Copilot for code completion in RStudio. To this end, I applied the 9 steps as decribed in [the Setup section](https://docs.posit.co/ide/user/ide/guide/tools/copilot.html#setup) of the RStudio User Guide. In addition, you may toggle on the setting "Copilot Indexing" to index and read from other R, Python, or SQL files available in the current project than the active document alone (Tools -> Global Options -> Copilot -> “Index project files with GitHub Copilot)”.
 
-I use the chattr package to to interact with GPT 4 and 3.5 in the Viewer pane of RStudio. You can initialize the chattr package running the R code in [my gist file](https://gist.github.com/pjastam/ec0e664fb2d620107873aba6e0f3d621). Note that, before you run this file, you should include your personal OpenAI secret key first. Of course, you also have the option to manually configure the chattr package by following the steps in [the chattr user guide](https://mlverse.github.io/chattr/).
+I use the chattr package to interact with GPT 4 and 3.5 in the Viewer pane of RStudio. You can initialize the chattr package running the R code in [my gist file](https://gist.github.com/pjastam/ec0e664fb2d620107873aba6e0f3d621). Note that, before you run this file, you should include your personal OpenAI secret key first. Of course, you also have the option to manually configure the chattr package by following the steps in the chattr user guide.
 
 Plugins: [GitHub Copilot](https://github.com/features/copilot) and [chattr](https://mlverse.github.io/chattr/)
 
